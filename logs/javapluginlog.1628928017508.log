@@ -1,4 +1,0 @@
-1628928017508:  INFO - (VcmpPluginInit) VC:MP Java integration plugin loading...
-1628928017509: ERROR - (JavaCore::LoadSettings) javaplugin.properties file not present.
-1628928017509: ERROR - (JavaCore::Initialise) Loading settings failed.
-1628928017509: ERROR - (JavaEventProxy::StartVM) JavaCore initialisation failed.

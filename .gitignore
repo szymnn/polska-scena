@@ -3,3 +3,4 @@ server_log.txt
 server.conf
 server.cfg
 plugins/
+logs/
