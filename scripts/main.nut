@@ -6,6 +6,13 @@ function onServerStop(){
 }
 
 function onScriptLoad(){
+	db<-ConnectSQL("PS_DB.sqlite");
+	QuerySQL( db, "CREATE TABLE users ( nick VARCHAR(32), pass VARCHAR(255), IP VARCHAR(255), UID VARCHAR(255), UID2 VARCHAR(255), level VARCHAR(255), kills VARCHAR(255), dead VARCHAR(255), joins VARCHAR(255), cash VARCHAR(255), bank VARCHAR(255), mute VARCHAR(255), nogoto VARCHAR(255), jail VARCHAR(255), skin VARCHAR(255), gangID VARCHAR(255), autospawn VARCHAR(32) )" );
+    QuerySQL( db, "CREATE TABLE IF NOT EXISTS vehicle ( name VARCHAR(32), cost VARCHAR(25), owner TEXT, sowner TEXT, model VARCHAR(32), pos VARCHAR(32), lock VARCHAR(32), fuel VARCHAR(32), tax VARCHAR(32), color1 VARCHAR(32), color2 VARCHAR(32), tune VARCHAR(32)  )" );
+	dofile( "scripts/server/.baseController.nut" );
+	dofile( "scripts/server/.playerController.nut" );
+	dofile( "scripts/server/.vehicle.nut" );
+	Vehicle(1);
 }
 
 function onScriptUnload(){
@@ -14,6 +21,10 @@ function onScriptUnload(){
 // =========================================== P L A Y E R   E V E N T S ==============================================
 
 function onPlayerJoin( player ){
+	//if(playerStats(player).Register)MessagePlayer("[#FFFFFF][INFO][#66CC00] Zarejestruj swoje konto",player);
+	//else if(playerStats(player).Login)MessagePlayer("[#FFFFFF][INFO][#66CC00] Zaloguj się na swoje konto",player);
+	//else MessagePlayer("[#FFFFFF][INFO][#66CC00] Zostales automatycznie zalogowany",player);
+	playerStats(player).check();
 }
 
 function onPlayerPart( player, reason ){
@@ -24,7 +35,8 @@ function onPlayerRequestClass( player, classID, team, skin ){
 }
 
 function onPlayerRequestSpawn( player ){
-	return 1;
+	if(playerStats(player).Login==true)return 1;
+	else return 0;
 }
 
 function onPlayerSpawn( player ){
@@ -50,6 +62,22 @@ function onPlayerCommand( player, cmd, text ){
 	{
 		CreateCheckpoint(player, 0, false, Vector(405.954, -459.039,10.1126), ARGB(255, 255, 0, 0), 1);
 		return 1;
+	}
+	else if (cmd=="spawn"){
+		local veh = FindVehicle( text.tointeger() );
+		if(Vehicle(veh).spawn()){
+			veh.Pos = Vector( ( player.Pos.x + 2 ), player.Pos.y, ( player.Pos.z + 0.1 ) );
+			MessagePlayer("Przywolano auto o id "+ veh, player);
+		}else MessagePlayer("Operacaja nie dozwolona.", player);
+	}
+	else if (cmd == "login" || cmd =="register" || cmd =="reg") {
+		if(text)playerStats(player).auth(text);
+		else MessagePlayer("Podaj haslo",player);
+	}
+	else if (cmd =="spas"){
+		if(text){
+			playerStats(player).edit("password",text);
+		}else MessagePlayer("podaj nowe haslo",player);
 	}
 	return 1;
 }
