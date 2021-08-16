@@ -2,7 +2,7 @@ class playerStats {
 	Kills 		= 0;
 	Dead 		= 0;
 	Joins 		= 0;
-	Cash 		= 0;
+	money 		= 0;
 	Bank 		= 0;
 	Level 		= 0;
 	Mute 		= 0;
@@ -34,7 +34,7 @@ class playerStats {
 				this.Kills 		= ::GetSQLColumnData( q, 6 );
 				this.Dead 		= ::GetSQLColumnData( q, 7 );
 				this.Joins 		= ::GetSQLColumnData( q, 8 );
-				p.Cash 			= ::GetSQLColumnData( q, 9 );
+				this.money 		= ::GetSQLColumnData( q, 9 );
 				this.Bank 		= ::GetSQLColumnData( q, 10 );
 				this.Mute 		= ::GetSQLColumnData( q, 11 );
 				this.Nogoto 	= ::GetSQLColumnData( q, 12 );
@@ -44,6 +44,7 @@ class playerStats {
 				this.Fuel 		= 0;
 				this.Spree 		= 0;
 				this.Joins 		+=1;
+				p.Cash			= this.money;
 			}else this.Register = true;
 		}
 		
@@ -80,7 +81,6 @@ class playerStats {
 			break;
 		}
 	}
-	
 	check = function(){
 		//print(" login " + this.Login +" register " + this.Register +" name " + this.name);
 		if(!this.Register)::MessagePlayer("[#FFFFFF][INFO][#66CC00] Zarejestruj swoje konto",this.player);
@@ -90,6 +90,10 @@ class playerStats {
 	message = function(text){
 		//print(text);
 		::MessagePlayer("[#FFFFFF][INFO][#66CC00] "+text ,this.player);
+	}
+	update = function(){
+		::QuerySQL( db, "UPDATE users SET kills="+this.Kills+", dead="+this.Dead+", joins="+this.Joins+", cash="+this.money+", bank="+this.Bank+", level="+this.Level+", mute="+this.Level+", nogoto="+this.Nogoto+", skin="+this.Skin+", WHERE nick='"+this.name+"'");
+		print(this.name+" HAS UPDATED STATS");
 	}
 }
 

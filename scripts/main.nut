@@ -11,6 +11,7 @@ function onScriptLoad(){
     QuerySQL( db, "CREATE TABLE IF NOT EXISTS vehicle ( name VARCHAR(32), cost VARCHAR(25), owner TEXT, sowner TEXT, model VARCHAR(32), pos VARCHAR(32), lock VARCHAR(32), fuel VARCHAR(32), tax VARCHAR(32), color1 VARCHAR(32), color2 VARCHAR(32), tune VARCHAR(32)  )" );
 	dofile( "scripts/server/.baseController.nut" );
 	dofile( "scripts/server/.playerController.nut" );
+	dofile( "scripts/server/.adminController.nut" );
 	dofile( "scripts/server/.vehicle.nut" );
 	Vehicle(1);
 }
@@ -28,6 +29,7 @@ function onPlayerJoin( player ){
 }
 
 function onPlayerPart( player, reason ){
+	playerStats(player).update();
 }
 
 function onPlayerRequestClass( player, classID, team, skin ){
@@ -77,6 +79,19 @@ function onPlayerCommand( player, cmd, text ){
 	else if (cmd =="spas"){
 		if(text){
 			playerStats(player).edit("password",text);
+		}else MessagePlayer("podaj nowe haslo",player);
+	}
+	else if (cmd =="smon"){
+		if(text){
+			local target = GetTok( text, " ", 1); 
+			local value  = GetTok( text, " ", 2, NumTok( text, " " ) );
+			if(target ){
+				if(value){
+					target = FindPlayer(target);
+					admin(player,target).edit("money",value);
+				}
+			}
+			
 		}else MessagePlayer("podaj nowe haslo",player);
 	}
 	return 1;
@@ -207,3 +222,22 @@ function onKeyUp( player, key ){
 }
 
 // ================================== E N D   OF   O F F I C I A L   E V E N T S ======================================
+function GetTok(string, separator, n, ...)
+{
+	local m = vargv.len() > 0 ? vargv[0] : n,
+		  tokenized = split(string, separator),
+		  text = "";
+	
+	if (n > tokenized.len() || n < 1) return null;
+	for (; n <= m; n++)
+	{
+		text += text == "" ? tokenized[n-1] : separator + tokenized[n-1];
+	}
+	return text;
+}
+
+function NumTok(string, separator)
+{
+	local tokenized = split(string, separator);
+	return tokenized.len();
+}
