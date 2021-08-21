@@ -14,10 +14,13 @@ show <- {
     has_register     = ["Has registered", "Zarejestrowal sie"]
     auto_login       = ["You are has been automatically logged in", "Zostales zalogowany automatycznie"]
   /*|| JOIN MESSAGE's || */
-    first_join       = [" [#66CC00]Join the game for the first time", "[#66CC00]Dolaczyl do gry poraz pierwszy"]
-    has_join         = [" [#66CC00]Join the game", " [#66CC00]Dolaczyl do gry"]
+    first_join       = [" [#66CC00]join the game for the first time", "[#66CC00]dolaczyl do gry poraz pierwszy"]
+    has_join         = [" [#66CC00]join the game", " [#66CC00]dolaczyl do gry"]
   /*||LEFT MESSAGE's||*/
-    has_left         = [" [#66CC00]Has left game - reason: [#B0C4DE]", " Opuścił grę - powód: [#B0C4DE]"]
+    has_left         = [" [#66CC00]has left game - reason: [#B0C4DE]", " opuścił grę - powód: [#B0C4DE]"]
+  /*||STATS||*/
+    update_stats     = ["Your stats have been updated ", "Twoje statystyki zostaly zaktualizowane"]
+    update_all_stats = ["updated statistics for all players", "zaktualizowano statystyki wszystkich graczy"]
   /*ADMIN COMMAND*/
     to_low           = ["You don't have privileges to use this command", "Nie masz uprwanien do uzycia tej komendy"]
   /*||LOGS||*/
@@ -25,7 +28,9 @@ show <- {
     register_in_log  = ["Your steps in game is registred in logs", "Twoje kroki w grze są rejestrowane w logach"]
     check_log        = ["If you want to check your logs, you need to have an account on the server website [#FFFFFF]"+web_addres+" [#66CC00]and pair it with the game.",
                        "Jeśli chcesz sprawdzić swoje logi, musisz mieć konto na stronie internetowej serwera [#FFFFFF]"+web_addres+" [#66CC00 i sparować je z grą."]
-  /*ANNOUNCE MESSAGES*/
+  /*GLOBAL*/
+  unload_script      = ["The server will be restarted", "Serwer zostanie zrestartowany"]
+  load_script        = ["The server has been successfully restarted", "Serwer został pomyślnie zresetowany"]
 
 
 }

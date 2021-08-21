@@ -44,6 +44,39 @@ function onScriptLoad(){
 	QuerySQL( db, "CREATE TABLE users ( nick VARCHAR(32), pass VARCHAR(255), IP VARCHAR(255), UID VARCHAR(255), UID2 VARCHAR(255), level VARCHAR(255), kills VARCHAR(255), dead VARCHAR(255), joins VARCHAR(255), cash VARCHAR(255), bank VARCHAR(255), mute VARCHAR(255), nogoto VARCHAR(255), jail VARCHAR(255), skin VARCHAR(255), gangID VARCHAR(255), autospawn VARCHAR(32) )" );
     QuerySQL( db, "CREATE TABLE IF NOT EXISTS vehicle ( name VARCHAR(32), cost VARCHAR(25), owner TEXT, sowner TEXT, model VARCHAR(32), pos VARCHAR(32), lock VARCHAR(32), fuel VARCHAR(32), tax VARCHAR(32), color1 VARCHAR(32), color2 VARCHAR(32), tune VARCHAR(32)  )" );
 	QuerySQL(db,"CREATE IF NOT EXISTS scenes( id int, start_pos varchar(255), stop_pos varchar(255), cam_pos VARCHAR(255), angle_cam varchar(255) time varchar(255), enter_pos varchar(255), exit_pos varchar(255), sound varchar(255))");
+	if(GetPlayers()>0){
+		for( local n = 0; n < GetPlayers(); n++ ){
+			local player = FindPlayer( n );
+			local temp = PlayerStaticController.downloadStats(player);
+			cache[player.ID] = temp;
+			PlayerStaticController.checkStatus(player,"login");
+		}
+	}
+	AnnounceAll("",6);
+}
+function relo(){ReloadScripts();}
+function onScriptReload(){
+	if(GetPlayers()>0){
+		for( local n = 0; n < GetPlayers(); n++ ){
+			local player = FindPlayer( n );
+			if(cache[player.ID].Login){
+				PlayerStaticController.updateStats(player);
+				MessagePlayer(show.server + show.unload_script[cache[player.ID].Lang],player);
+			}
+		}
+	}
+	NewTimer("ClientMessageToAll", 1000, 1, "[#FF00FF][SERVER][#FF69B4] Restart will happen in 5 second");
+	NewTimer("AnnounceAll", 1000, 1, "~g~Restart will happen in ~t~5 ~g~second",6);
+	NewTimer("ClientMessageToAll", 2000, 1, "[#FF00FF][SERVER][#FF69B4] Restart will happen in 4 second");
+	NewTimer("AnnounceAll", 2000, 1, "~g~Restart will happen in ~t~4 ~g~second",6);
+	NewTimer("ClientMessageToAll", 3000, 1, "[#FF00FF][SERVER][#FF69B4] Restart will happen in 3 second");
+	NewTimer("AnnounceAll", 3000, 1, "~g~Restart will happen in ~t~3 ~g~second",6);
+	NewTimer("ClientMessageToAll", 4000, 1, "[#FF00FF][SERVER][#FF69B4] Restart will happen in 2 second");
+	NewTimer("AnnounceAll", 4000, 1, "~g~Restart will happen in ~t~2 ~g~second",6);
+	NewTimer("ClientMessageToAll", 5000, 1, "[#FF00FF][SERVER][#FF69B4] Restart will happen in 1 second");
+	NewTimer("AnnounceAll", 5000, 1, "~g~Restart will happen in ~t~1 ~g~second",6);
+	NewTimer("AnnounceAll", 6000, 1, "~g~.................................",6);
+	NewTimer("relo", 6500, 1);
 }
 
 function onScriptUnload(){
@@ -53,25 +86,16 @@ function onScriptUnload(){
 // =========================================== P L A Y E R   E V E N T S ==============================================
 
 function onPlayerJoin( player ){
-
 	local temp = PlayerStaticController.downloadStats(player);
 	cache[player.ID] = temp;
-	::print(cache[player.ID].player.Cash);
-	::print(cache[player.ID].player.IP);
-	PlayerStaticController.check(player,"login");
-
-	/*if(!cache[player.ID].Login) ::MessagePlayer( show.info(cache[player.ID].Lang) + show.must_login(cache[player.ID].Lang) ,player);
-    else if(!cache[player.ID].Register)::MessagePlayer(show.info(cache[player.ID].Lang)+ show.must_register(cache[player.ID].Lang) ,player);
-    else ::MessagePlayer( show.succes[cache[player.ID].Lang]+ show.auto_login[cache[player.ID].Lang],player);
-	*/
-
+	PlayerStaticController.checkStatus(player,"login");
 }
 
 
 
 function onPlayerPart( player, reason ){
 	print(player.ID);
-
+ 	PlayerStaticController.updateStats(player);
 	//playerStats().update();
 }
 
@@ -80,7 +104,7 @@ function onPlayerRequestClass( player, classID, team, skin ){
 }
 
 function onPlayerRequestSpawn( player ){
-	if(playerStats(player).Login==true)return 1;
+	if(cache[player.ID].Login==true)return 1;
 	else return 0;
 }
 
@@ -291,10 +315,11 @@ function NumTok(string, separator)
 	local tokenized = split(string, separator);
 	return tokenized.len();
 }
+
 function onConsoleInput(cmd, text)
 {
 	if ( cmd == "reload" ){
-	ReloadScripts();
+	onScriptReload();
 	}
 	
 }
