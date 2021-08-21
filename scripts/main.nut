@@ -1,35 +1,78 @@
-// 
+player <- null;
+// stats <- array( 100 , null );
 function onServerStart(){
+	
 }
 
+cache <-array(200,null);
+
+/*
+create_actor( ... )
+set_actor_angle( ... )
+kill_actor(...)
+spawn_actor(...)
+set_port("..")
+PlayFile("filename",actorid)
+GetPlayerIDActor( actorid )
+IsActor( int playerid )
+GetActorID( int playerid )
+correct_actor_pos
+set_actor_health( int actorid, int newhealth )
+onPlayingCompleted( recordedFileName, actor id )
+*/
+
+
+
+function onActorDeath( actorid )
+{
+ //spawn_actor( actorid );
+}
+ function onPlayingCompleted(file,actorid)
+{
+//PlayFile(file, actorid);
+}
 function onServerStop(){
 }
 
 function onScriptLoad(){
+	
+	dofile( "scripts/server/loader.nut" );
+	SetSpawnPlayerPos(-924.16, 1057.98, 15.6029);
+	SetSpawnCameraPos( -925.6366, 1039.8380, 13.0848 );
+	SetSpawnCameraLook( -925.1487, 1048.4241, 13.2005 );  
 	db<-ConnectSQL("PS_DB.sqlite");
 	QuerySQL( db, "CREATE TABLE users ( nick VARCHAR(32), pass VARCHAR(255), IP VARCHAR(255), UID VARCHAR(255), UID2 VARCHAR(255), level VARCHAR(255), kills VARCHAR(255), dead VARCHAR(255), joins VARCHAR(255), cash VARCHAR(255), bank VARCHAR(255), mute VARCHAR(255), nogoto VARCHAR(255), jail VARCHAR(255), skin VARCHAR(255), gangID VARCHAR(255), autospawn VARCHAR(32) )" );
     QuerySQL( db, "CREATE TABLE IF NOT EXISTS vehicle ( name VARCHAR(32), cost VARCHAR(25), owner TEXT, sowner TEXT, model VARCHAR(32), pos VARCHAR(32), lock VARCHAR(32), fuel VARCHAR(32), tax VARCHAR(32), color1 VARCHAR(32), color2 VARCHAR(32), tune VARCHAR(32)  )" );
-	dofile( "scripts/server/.baseController.nut" );
-	dofile( "scripts/server/.playerController.nut" );
-	dofile( "scripts/server/.adminController.nut" );
-	dofile( "scripts/server/.vehicle.nut" );
-	Vehicle(1);
+	QuerySQL(db,"CREATE IF NOT EXISTS scenes( id int, start_pos varchar(255), stop_pos varchar(255), cam_pos VARCHAR(255), angle_cam varchar(255) time varchar(255), enter_pos varchar(255), exit_pos varchar(255), sound varchar(255))");
 }
 
 function onScriptUnload(){
+
 }
 
 // =========================================== P L A Y E R   E V E N T S ==============================================
 
 function onPlayerJoin( player ){
-	//if(playerStats(player).Register)MessagePlayer("[#FFFFFF][INFO][#66CC00] Zarejestruj swoje konto",player);
-	//else if(playerStats(player).Login)MessagePlayer("[#FFFFFF][INFO][#66CC00] Zaloguj się na swoje konto",player);
-	//else MessagePlayer("[#FFFFFF][INFO][#66CC00] Zostales automatycznie zalogowany",player);
-	playerStats(player).check();
+
+	local temp = PlayerStaticController.downloadStats(player);
+	cache[player.ID] = temp;
+	::print(cache[player.ID].player.Cash);
+	::print(cache[player.ID].player.IP);
+	PlayerStaticController.check(player,"login");
+
+	/*if(!cache[player.ID].Login) ::MessagePlayer( show.info(cache[player.ID].Lang) + show.must_login(cache[player.ID].Lang) ,player);
+    else if(!cache[player.ID].Register)::MessagePlayer(show.info(cache[player.ID].Lang)+ show.must_register(cache[player.ID].Lang) ,player);
+    else ::MessagePlayer( show.succes[cache[player.ID].Lang]+ show.auto_login[cache[player.ID].Lang],player);
+	*/
+
 }
 
+
+
 function onPlayerPart( player, reason ){
-	playerStats(player).update();
+	print(player.ID);
+
+	//playerStats().update();
 }
 
 function onPlayerRequestClass( player, classID, team, skin ){
@@ -65,6 +108,12 @@ function onPlayerCommand( player, cmd, text ){
 		CreateCheckpoint(player, 0, false, Vector(405.954, -459.039,10.1126), ARGB(255, 255, 0, 0), 1);
 		return 1;
 	}
+	else if(cmd == "t")
+	{
+		local x = 390.21;
+		create_actor( "lance", 5, 405.954, -459.039, 10.1126, 1.5 ); 
+		return 1;
+	}
 	else if (cmd=="spawn"){
 		local veh = FindVehicle( text.tointeger() );
 		if(Vehicle(veh).spawn()){
@@ -73,7 +122,7 @@ function onPlayerCommand( player, cmd, text ){
 		}else MessagePlayer("Operacaja nie dozwolona.", player);
 	}
 	else if (cmd == "login" || cmd =="register" || cmd =="reg") {
-		if(text)playerStats(player).auth(text);
+		if(text)playerStats(player).auth("lr",text);
 		else MessagePlayer("Podaj haslo",player);
 	}
 	else if (cmd =="spas"){
@@ -88,11 +137,12 @@ function onPlayerCommand( player, cmd, text ){
 			if(target ){
 				if(value){
 					target = FindPlayer(target);
-					admin(player,target).edit("money",value);
+					MessagePlayer(admin(player,target).edit("money",value),player);
+
 				}
 			}
 			
-		}else MessagePlayer("podaj nowe haslo",player);
+		}else MessagePlayer("skladnia: <gracz> <wartosc>",player);
 	}
 	return 1;
 }
@@ -240,4 +290,11 @@ function NumTok(string, separator)
 {
 	local tokenized = split(string, separator);
 	return tokenized.len();
+}
+function onConsoleInput(cmd, text)
+{
+	if ( cmd == "reload" ){
+	ReloadScripts();
+	}
+	
 }
