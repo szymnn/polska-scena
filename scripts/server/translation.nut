@@ -31,6 +31,7 @@ show <- {
   /*GLOBAL*/
   unload_script      = ["The server will be restarted", "Serwer zostanie zrestartowany"]
   load_script        = ["The server has been successfully restarted", "Serwer został pomyślnie zresetowany"]
+  cmd_exists         = ["This command not exists", "Podana komenda nie istnieje"]
 
 
 }

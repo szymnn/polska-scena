@@ -1,12 +1,13 @@
+cache <-array(200,null);
 class PlayerStaticController {
     static function checkStatus(p,...) {
         if(vargv[0].len()>0){
             switch(vargv[0]){
                 case "login":
-                    if(!cache[p.ID].Login) ::MessagePlayer( show.info + show.must_login[cache[p.ID].Lang] ,p);
-                    else if(!cache[p.ID].Register)::MessagePlayer(show.info + show.must_register[cache[p.ID].Lang] ,p);
-                    else ::MessagePlayer( show.info + show.auto_login[cache[p.ID].Lang],p);
-                break
+                    if(!cache[p.ID].Login) return show.info + show.must_login[cache[p.ID].Lang];
+                    else if(!cache[p.ID].Register) return show.info + show.must_register[cache[p.ID].Lang];
+                    else return show.info + show.auto_login[cache[p.ID].Lang];
+                break;
             }
         }
     }
