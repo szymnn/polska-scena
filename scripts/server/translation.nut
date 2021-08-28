@@ -13,6 +13,12 @@ show <- {
     has_login        = ["Has logged", "Zalogowal sie"]
     has_register     = ["Has registered", "Zarejestrowal sie"]
     auto_login       = ["You are has been automatically logged in", "Zostales zalogowany automatycznie"]
+    _login           = ["You are has been logged in", "Zostales zalogowany "]
+    _wrongPass       = ["This password is incorrect", "Podano bledne haslo"]
+    _alreadyLogged   = ["You are already logged in", "Jesteś już zalogowany"]
+    _pass_empty      = ["Password cannot be empty", "Wpisz hasło"]
+    busy             = ["This nickname is already registered", "Wybrana nazwa użytkownika jest już zarejestrowana."]
+    reg_succes       = ["Thanks for your register, now u can spawn player and have fun:) !", "Dziękujemy za rejestracje, od teraz możesz zrodzić gracza i się świetnie bawić :)"]
   /*|| JOIN MESSAGE's || */
     first_join       = [" [#66CC00]join the game for the first time", "[#66CC00]dolaczyl do gry poraz pierwszy"]
     has_join         = [" [#66CC00]join the game", " [#66CC00]dolaczyl do gry"]
@@ -22,7 +28,7 @@ show <- {
     update_stats     = ["Your stats have been updated ", "Twoje statystyki zostaly zaktualizowane"]
     update_all_stats = ["updated statistics for all players", "zaktualizowano statystyki wszystkich graczy"]
   /*ADMIN COMMAND*/
-    to_low           = ["You don't have privileges to use this command", "Nie masz uprwanien do uzycia tej komendy"]
+    
   /*||LOGS||*/
     save_to_log      = ["**SAVED IN LOG**", "**ZAPISANO W LOGU**"]
     register_in_log  = ["Your steps in game is registred in logs", "Twoje kroki w grze są rejestrowane w logach"]
@@ -32,6 +38,11 @@ show <- {
   unload_script      = ["The server will be restarted", "Serwer zostanie zrestartowany"]
   load_script        = ["The server has been successfully restarted", "Serwer został pomyślnie zresetowany"]
   cmd_exists         = ["This command not exists", "Podana komenda nie istnieje"]
-
+  cmd_params         = ["You need to add more characters to use the command type/<command> <param>", "Aby uzyc komendy musisz wprowadzic parametr wpisz: /<nazwa komendy> <cokolwiek>"]
+  cmd_low            = ["You don't have privileges to use this command", "Nie masz uprwanien do uzycia tej komendy"]
+  cmd_secure         = ["This command is secure by password, type <cmd> <password> <type of cmd> <cmd sytnax> example: /set token moeney <player> <value>", 
+                        "To polecenie jest chronione hasłem, wpisz <cmd> <haslo> <typ komendy> <skladnia komendy> np: /set haslo money <gracz> <wartosc>"]
+/*SYTNAXES*/
+  player_value      = ["<player> <value>", "<gracz> <wartosc>"]
 
 }

@@ -4,24 +4,35 @@ class PlayerStaticController {
         if(vargv[0].len()>0){
             switch(vargv[0]){
                 case "login":
-                    if(!cache[p.ID].Login) return show.info + show.must_login[cache[p.ID].Lang];
-                    else if(!cache[p.ID].Register) return show.info + show.must_register[cache[p.ID].Lang];
+                    if(!cache[p.ID].Register) return show.info + show.must_register[cache[p.ID].Lang];
+                    else if(!cache[p.ID].Login) return show.info + show.must_login[cache[p.ID].Lang];
                     else return show.info + show.auto_login[cache[p.ID].Lang];
                 break;
             }
         }
     }
     static function updateStats(player){
+        player = ::FindPlayer(player.Name);
 		if(cache[player.ID].Login){
-			::QuerySQL(db,"UPDATE users SET level = '"+cache[player.ID].Level+"', kills= '"+cache[player.ID].Kills+"', dead = '"+cache[player.ID].Dead+"', joins = '"+cache[player.ID].Joins+"', cash= '"+cache[player.ID].player.Cash+"', bank = '"+cache[player.ID].Bank+"', mute= '"+cache[player.ID].Mute+"', nogoto = '"+cache[player.ID].Nogoto+"', jail = '"+cache[player.ID].Jail+"', skin = '"+cache[player.ID].player.Skin+"' WHERE nick = '"+cache[player.ID].player.Name+"'");
-			print(cache[player.ID].player.Name+" HAS UPDATED STATS");
+            print("UPDATE users SET level = '"+cache[player.ID].Level+"', kills= '"+cache[player.ID].Kills+"', dead = '"+cache[player.ID].Dead+"', joins = '"+cache[player.ID].Joins+"', cash= '"+cache[player.ID].player.Cash+"', bank = '"+cache[player.ID].Bank+"', mute= '"+cache[player.ID].Mute+"', nogoto = '"+cache[player.ID].Nogoto+"', jail = '"+cache[player.ID].Jail+"', skin = '"+cache[player.ID].player.Skin+"' WHERE nick = '"+player.Name+"'");
+            //local q = ::QuerySQL(db,"INSERT OR REPLACE INTO users( nick, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) ('"+player.Name+"', '"+cache[player.ID].Level+"', '"+cache[player.ID].Kills+"', '"+cache[player.ID].Dead+"', '"+cache[player.ID].Joins+"', '"+cache[player.ID].player.Cash+"', '"+cache[player.ID].Bank+"', '"+cache[player.ID].Mute+"', '"+cache[player.ID].Nogoto+"', '"+cache[player.ID].Jail+"', '"+cache[player.ID].player.Skin+"')");
+            //local q = ::QuerySQL(db,"UPDATE users SET cash= '"+cache[player.ID].player.Cash+"' WHERE nick = '"+player.Name+"'");
+            local q = format("UPDATE users SET ( level = '%i', kills= '%i', dead = '%i', joins = '%i', cash= '%i', bank = '%i', mute= '%i', nogoto = '%i', jail = '%i', skin = '%i' WHERE nick = '%s')"
+            cache[player.ID].Level, cache[player.ID].Kills,cache[player.ID].Dead,cache[player.ID].Joins,cache[player.ID].player.Cash,cache[player.ID].Bank,cache[player.ID].Mute,cache[player.ID].Nogoto, cache[player.ID].Jail,cache[player.ID].player.Skin, cache[player.ID].player.Name);
+            ::QuerySQL(db,q);
+            print(cache[player.ID].player.Name+" HAS UPDATED STATS");
             ::MessagePlayer(show.info + show.update_stats[cache[player.ID].Lang],player);
+            cache[ player.ID ] = null;
+            
+                
 		}
 		
 	}
     static function downloadStats(player) {
         local plModel = PlayerModel();
+        plModel.Lang        = 1;
         local q= ::QuerySQL(db, "SELECT * FROM users WHERE nick='"+player.Name+"'");
+        print(q);
 		if(!q){ 
             plModel.Register = false;
         }
@@ -38,13 +49,42 @@ class PlayerStaticController {
                 plModel.Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
                 plModel.Jail 		= ::GetSQLColumnData( q, 13).tointeger();
                 player.Skin 		= ::GetSQLColumnData( q, 14).tointeger();
-                plModel.Lang  = 1;
+                plModel.Lang        = 1;
                 plModel.Fuel 		= 0;
                 plModel.Spree 		= 0;
 			}else plModel.Register = true;
-
-            plModel.player = player;
-            return plModel;
 		}
+        plModel.player = player;
+        return plModel;
+    }
+    static function auth(p, pass){
+        local q= ::QuerySQL(db, "SELECT * FROM users WHERE nick='"+p.Name+"'"),c;
+		if(cache[p.ID].Register==false){
+			if(q) return(show.info + show.busy[cache[p.ID].Lang]);
+			else{
+				::QuerySQL(db,"INSERT INTO users( nick, pass, secure, IP, UID, UID2, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) values('"+p.Name+"', '"+::base64_encode(pass)+"','','"+p.IP+"','"+p.UniqueID+"','"+p.UniqueID2+"','0','0','0','0','0','0','0','0','0','1','0','0')");
+				if(cache[p.ID].Lang==0) c = "Your password is: [#FF0000] "+ pass +" - don't forgot it :)";
+                else c = "twoje hsalo to: [#FF0000] "+ pass +" - nie zapomnij go :)";
+                return( show.info + show.reg_succes[cache[p.ID].Lang] + c);
+			}
+		}
+        else if(!cache[p.ID].Login){
+            if(q){
+                if(::base64_encode(pass)==::GetSQLColumnData(q,1)){
+                    ::QuerySQL(db,"UPDATE users SET IP = '"+p.IP+"', UID = '"+p.UniqueID+"', UID2 = '" +p.UniqueID2+"' WHERE nick = '"+p.Name+"'");
+                    cache[p.ID].Login = true;
+                    return(show.info + show._login[cache[p.ID].Lang]);
+                }else return (show.info + show._wrongPass[cache[p.ID].Lang]);
+            }
+        }
+        else return( show.info + show._alreadyLogged[cache[p.ID].Lang]);
+    }
+    static function unjail( p ) {   
+      local p = ::FindPlayer(p);
+		if( cache[ p.ID ].Jail == 1 ){
+            cache[ p.ID ].Jail = 0;
+            p.Frozen = false;
+            //MessagePlayer( "[#ffffff][AUTO-UNJAIL][#00ff00] Zostales wypuszczony.", p );
+	    }
     }
 }
