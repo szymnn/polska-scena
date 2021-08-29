@@ -1,0 +1,3 @@
+DOCUMENTATION:
+	find(player_name,column_name eg.('nick'), users_table eg.('accounts') );
+	

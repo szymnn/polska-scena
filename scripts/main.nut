@@ -19,21 +19,41 @@ function onScriptLoad(){
 	SetSpawnCameraPos( -925.6366, 1039.8380, 13.0848 );
 	SetSpawnCameraLook( -925.1487, 1048.4241, 13.2005 );  
 	//local test = dbController.create("test3", ["test", "test2", "test3"], [""], [",UNIQUE(test)"]);
-	local q = dbController();
-	q.create( "users", 
-		["nick", "pass", "IP", "UID", "UID2", "level", "kills", "dead", "joins", "cash", "bank", "mute", "nogoto", "jail", "skin", "gangID", "autospawn"], 
-		[ "VARCHAR(32)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(32)"], 
-		[",UNIQUE(nick)"] 
-	);
-	q.create("vehicle",
-		["name","cost","owner","sowner","model", "pos", "lock", "fuel", "tax", "color1", "color2", "tune"],
-		["VARCHAR(32)",  "VARCHAR(25)",  "TEXT",  "TEXT",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)"]
-	);
-	q.create("cmds",
-		["cmd", "lvl", "secure"],
-		["VARCHAR(255)" ,  "VARCHAR(255)",  "VARCHAR(255)"], 
-		[",UNIQUE(cmd)"]
-	);
+	// dbManager.create2( "users", 
+	// 	["nick", "pass", "IP", "UID", "UID2", "level", "kills", "dead", "joins", "cash", "bank", "mute", "nogoto", "jail", "skin", "gangID", "autospawn"], 
+	// 	[ "VARCHAR(32)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(32)"], 
+	// 	[",UNIQUE(nick)"] 
+	// );
+	// dbManager.create2("vehicle",
+	// 	["name","cost","owner","sowner","model", "pos", "lock", "fuel", "tax", "color1", "color2", "tune"],
+	// 	["VARCHAR(32)",  "VARCHAR(25)",  "TEXT",  "TEXT",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)"]
+	// );
+	// dbManager.create2("cmds",
+	// 	["cmd", "lvl", "secure"],
+	// 	["VARCHAR(255)" ,  "VARCHAR(255)",  "VARCHAR(255)"], 
+	// 	[",UNIQUE(cmd)"]
+	// );
+	//local p= dbManager.select(["nick","pass"],"users","nick","malina","like");
+	//if(GetSQLColumnData(p,0)=="Malina")print("OK");
+	/**************FIND*************/
+	//;
+	//test
+	local test = playerModel();
+	local a = test.find("Malina");
+	//local b = test.get("ip");
+	if(a)print(a);
+	//if(b)print(b);
+	//
+
+	//find("nick","Malina");
+	//local c = from("users");
+	//if(GetSQLColumnData(c,0)=="Malina")print("OK2");
+	string("dupa");
+	nullable.string("dupa");
+	
+	//local d = findall("nick", "users");
+	//print(GetSQLColumnData(d,0));
+	/****************************/
 	if(GetPlayers()>0){
 		for( local n = 0; n < GetPlayers(); n++ ){
 			local player = FindPlayer( n );
@@ -43,14 +63,24 @@ function onScriptLoad(){
 		}
 	}
 	AnnounceAll("",6);
-	onAddCommand("reg","0","");
-	onAddCommand("log","0","");
-	onAddCommand("login","0","");
-	onAddCommand("smon","10","test");
-	onAddCommand("cmds","0","");
-	onAddCommand("help","0","");
-	onAddCommand("set","0","");
-	onAddCommand("jail","0","");
+	//onAddCommand("reg","0","");
+	//onAddCommand("log","0","");
+	//onAddCommand("login","0","");
+	//onAddCommand("smon","10","test");
+	//onAddCommand("cmds","0","");
+	//onAddCommand("help","0","");
+	//onAddCommand("set","0","");
+	//onAddCommand("jail","0","");
+	dbManager.migrate(
+		"test9",
+		[
+			string("nick"),
+			unique.string("email"),
+			nullable.defaul.integer("kasa",0),
+			nullable.defaul.integer("bank",0),
+			timestamp("data_rejestracji")
+		]
+	)
 }
 function relo(){
 	DisconnectSQL(db);
@@ -89,9 +119,10 @@ function onScriptUnload(){
 // =========================================== P L A Y E R   E V E N T S ==============================================
 
 function onPlayerJoin( player ){
-	local temp = PlayerStaticController.downloadStats(player);
+	local temp = Player.playerStaticController(player);
 	print(temp.Login);
 	cache[player.ID] = temp;
+	player+=cache[player.ID];
 	MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 }
 
@@ -402,7 +433,7 @@ function onAddCommand(...){
 	if(!vargv[2])cmd =  cmdController.add(vargv[0], vargv[1], "");
 	else if(vargv[2]) cmd = cmdController.add(vargv[0], vargv[1], vargv[2]);
 	else print("...ERROR... YOU MUST ADD COMMAND NAME AND LEVEL, IF U WANT SECURE CODE ADD THIS TOO...");
-	print(cmd);
+	//print(cmd);
 }
 function onConsoleInput(cmd, text)
 {

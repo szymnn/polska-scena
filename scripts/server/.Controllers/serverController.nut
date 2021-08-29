@@ -1,3 +1,7 @@
+var         <-null;
+DEBUG       <-false;
+debug       <-null;
+::dofile( "scripts/server/.Models/Server/serverModel.nut" );
 class serverController{
     config = serverModel();
     static function setServerModel() {
@@ -77,7 +81,7 @@ class serverController{
         //if(!file("configuration.ini","wb+")) print("dupa");
         if(!::ReadIniString( "configuration.ini", "DATABASE", "db_type"))
         {
-            file("configuration.ini","wb+");
+            local file = file("configuration.ini","wb+");
             ::WriteIniString( "configuration.ini", "DATABASE", "db_type", "" );
             ::WriteIniString( "configuration.ini", "DATABASE", "db_name", "" );
             ::WriteIniString( "configuration.ini", "DATABASE", "db_user", "" );
@@ -118,6 +122,8 @@ class serverController{
             ::WriteIniInteger(                 "configuration.ini", "SERVER", "SetMaxPlayers",0);
             ::WriteIniInteger(                   "configuration.ini", "SERVER", "SetTimeRate",0);
             ::WriteIniInteger(                     "configuration.ini", "SERVER", "SetMinute",0);
+            ::WriteIniBool(                     "configuration.ini", "SERVER", "DEBUG",false);
+            file.close();
             print("***SERVER HAS CREATED CONFIGURATION FILE***");
             print("**CONFIGURE YOUR configuration.ini FILE IN THE ROOT DIRECTORY");
             print("**THE SERVER WILL BE SHUT DOWN");
@@ -139,25 +145,25 @@ class serverController{
             ::SetPassword(::ReadIniString(             "configuration.ini", "SERVER", "SetPassword"));
             ::SetGameModeName(::ReadIniString(         "configuration.ini", "SERVER", "SetGameModeName"));
             /******************************BOOLEANS********************************************/
-            ::SetDeathmatchScoreboard(::ReadIniBool(   "configuration.ini", "SERVER", "SetDeathmatchScoreboard"));
-            ::SetDeathMessages(::ReadIniBool(          "configuration.ini", "SERVER", "SetDeathMessages"));
-            ::SetDrivebyEnabled(::ReadIniBool(         "configuration.ini", "SERVER", "SetDrivebyEnabled"));
-            ::SetDriveOnWater(::ReadIniBool(           "configuration.ini", "SERVER", "SetDriveOnWater"));
-            ::SetFallEnabled(::ReadIniBool(            "configuration.ini", "SERVER", "SetFallEnabled"));
-            ::SetFastSwitch(::ReadIniBool(             "configuration.ini", "SERVER", "SetFastSwitch"));
-            ::SetFlyingCars(::ReadIniBool(             "configuration.ini", "SERVER", "SetFlyingCars"));
-            ::SetFrameLimiter(::ReadIniBool(           "configuration.ini", "SERVER", "SetFrameLimiter"));
-            ::SetFriendlyFire(::ReadIniBool(           "configuration.ini", "SERVER", "SetFriendlyFire"));
-            ::SetJoinMessages(::ReadIniBool(           "configuration.ini", "SERVER", "SetJoinMessages"));
-            ::SetJumpSwitch(::ReadIniBool(             "configuration.ini", "SERVER", "SetJumpSwitch"));
-            ::SetPerfectHandling(::ReadIniBool(        "configuration.ini", "SERVER", "SetPerfectHandling"));
-            ::SetShootInAir(::ReadIniBool(             "configuration.ini", "SERVER", "SetShootInAir"));
-            ::SetShowNametags(::ReadIniBool(           "configuration.ini", "SERVER", "SetShowNametags"));
-            ::SetShowOnRadar(::ReadIniBool(            "configuration.ini", "SERVER", "SetShowOnRadar"));
-            ::SetStuntBike(::ReadIniBool(              "configuration.ini", "SERVER", "SetStuntBike"));
-            ::SetSyncFrameLimiter(::ReadIniBool(       "configuration.ini", "SERVER", "SetSyncFrameLimiter"));
-            ::SetTaxiBoostJump(::ReadIniBool(          "configuration.ini", "SERVER", "SetTaxiBoostJump"));
-            ::SetWallglitch(::ReadIniBool(             "configuration.ini", "SERVER", "SetWallglitch"));            
+            ::SetDeathmatchScoreboard(::ReadIniBool(        "configuration.ini", "SERVER", "SetDeathmatchScoreboard"));
+            ::SetDeathMessages(::ReadIniBool(               "configuration.ini", "SERVER", "SetDeathMessages"));
+            ::SetDrivebyEnabled(::ReadIniBool(              "configuration.ini", "SERVER", "SetDrivebyEnabled"));
+            ::SetDriveOnWater(::ReadIniBool(                "configuration.ini", "SERVER", "SetDriveOnWater"));
+            ::SetFallEnabled(::ReadIniBool(                 "configuration.ini", "SERVER", "SetFallEnabled"));
+            ::SetFastSwitch(::ReadIniBool(                  "configuration.ini", "SERVER", "SetFastSwitch"));
+            ::SetFlyingCars(::ReadIniBool(                  "configuration.ini", "SERVER", "SetFlyingCars"));
+            ::SetFrameLimiter(::ReadIniBool(                "configuration.ini", "SERVER", "SetFrameLimiter"));
+            ::SetFriendlyFire(::ReadIniBool(                "configuration.ini", "SERVER", "SetFriendlyFire"));
+            ::SetJoinMessages(::ReadIniBool(                "configuration.ini", "SERVER", "SetJoinMessages"));
+            ::SetJumpSwitch(::ReadIniBool(                  "configuration.ini", "SERVER", "SetJumpSwitch"));
+            ::SetPerfectHandling(::ReadIniBool(             "configuration.ini", "SERVER", "SetPerfectHandling"));
+            ::SetShootInAir(::ReadIniBool(                  "configuration.ini", "SERVER", "SetShootInAir"));
+            ::SetShowNametags(::ReadIniBool(                "configuration.ini", "SERVER", "SetShowNametags"));
+            ::SetShowOnRadar(::ReadIniBool(                 "configuration.ini", "SERVER", "SetShowOnRadar"));
+            ::SetStuntBike(::ReadIniBool(                   "configuration.ini", "SERVER", "SetStuntBike"));
+            ::SetSyncFrameLimiter(::ReadIniBool(            "configuration.ini", "SERVER", "SetSyncFrameLimiter"));
+            ::SetTaxiBoostJump(::ReadIniBool(               "configuration.ini", "SERVER", "SetTaxiBoostJump"));
+            ::SetWallglitch(::ReadIniBool(                  "configuration.ini", "SERVER", "SetWallglitch"));            
             /***************************** NUMBERS **************************************/
             ::SetWaterLevel(::ReadIniNumber(                 "configuration.ini", "SERVER", "SetWaterLevel"));
             ::SetGravity(::ReadIniNumber(                    "configuration.ini", "SERVER", "SetGravity"));
@@ -170,10 +176,34 @@ class serverController{
             ::SetTimeRate(::ReadIniInteger(                   "configuration.ini", "SERVER", "SetTimeRate"));
             ::SetMaxPlayers(::ReadIniInteger(                 "configuration.ini", "SERVER", "SetMaxPlayers"));
             /*SET SERVER MODEL*/
+            ::DEBUG = ::ReadIniBool(                          "configuration.ini", "SERVER", "DEBUG");
             setServerModel();
         }
-        ::dofile( "scripts/server/.Controllers/dbController.nut" );
     }
 
-    
+    static function dump(...) {
+        local dump = "";
+        foreach(a,values in vargv){
+            dump += "" + values + " ";
+        }
+        print(dump);
+    }
+    err = function () {
+        error("***~~DATABASE~~*** WRONG DB_TYPE IN CONFIGURATION.INI");
+    }
+}
+var = serverController;
+debug = function(typ,...) {
+    if(DEBUG){
+        local dump = "";
+        foreach(a,values in vargv){
+            dump += "" + values + " ";
+        }
+        switch(typ){
+            case "db":
+                error("***~~DATABASE~~*** "+dump+"\n");
+            break;
+        }
+            
+    }
 }

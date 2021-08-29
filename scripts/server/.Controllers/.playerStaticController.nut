@@ -1,5 +1,4 @@
-cache <-array(200,null);
-class PlayerStaticController {
+class PlayerStaticController extends playerModel {
     static function checkStatus(p,...) {
         if(vargv[0].len()>0){
             switch(vargv[0]){
@@ -29,18 +28,15 @@ class PlayerStaticController {
 		
 	}
     static function downloadStats(player) {
-        local plModel = PlayerModel();
-        plModel.Lang        = 1;
-        local q= ::QuerySQL(db, "SELECT * FROM users WHERE nick='"+player.Name+"'");
-        print(q);
-		if(!q){ 
+        local plModel = playerModel();
+        plModel.Lang = 1;
+        local q = find(player.Name,"nick","users");
+        if(!q){
             plModel.Register = false;
-        }
-		else{
-			if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
+        }else{
+            if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
                 plModel.Login 	    = true;
                 plModel.Register	= true;	
-                player.Cash 		= ::GetSQLColumnData( q, 9 ).tointeger();
                 plModel.Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
                 plModel.Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
                 plModel.Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
@@ -48,7 +44,8 @@ class PlayerStaticController {
                 plModel.Mute 		= ::GetSQLColumnData( q, 11).tointeger();
                 plModel.Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
                 plModel.Jail 		= ::GetSQLColumnData( q, 13).tointeger();
-                player.Skin 		= ::GetSQLColumnData( q, 14).tointeger();
+                player.Cash         = ::GetSQLColumnData( q, 9 ).tointeger();
+                player.Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
                 plModel.Lang        = 1;
                 plModel.Fuel 		= 0;
                 plModel.Spree 		= 0;
@@ -58,8 +55,8 @@ class PlayerStaticController {
         return plModel;
     }
     static function auth(p, pass){
-        local q= ::QuerySQL(db, "SELECT * FROM users WHERE nick='"+p.Name+"'"),c;
-		if(cache[p.ID].Register==false){
+        local q = find(p.Name,"nick","users"),c;
+		if(!cache[p.ID].Register==false){
 			if(q) return(show.info + show.busy[cache[p.ID].Lang]);
 			else{
 				::QuerySQL(db,"INSERT INTO users( nick, pass, secure, IP, UID, UID2, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) values('"+p.Name+"', '"+::base64_encode(pass)+"','','"+p.IP+"','"+p.UniqueID+"','"+p.UniqueID2+"','0','0','0','0','0','0','0','0','0','1','0','0')");

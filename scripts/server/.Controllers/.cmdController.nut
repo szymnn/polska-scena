@@ -19,16 +19,14 @@ class cmdController {
             local q = dbController();
             if(secure) q.insert("cmds", ["cmd", "lvl", "secure"], [cmd,lvl,::base64_encode(secure)]);
             else q.insert("cmds", ["cmd", "lvl"], [cmd,lvl]);
-            return show.succes[0] + " command added succesfully";
-        }return show.sytnax[0] + " must add command name ";
+            if(DEBUG)print("**COMMANDS** command added succesfully");
+        }else print("**COMMANDS** must add command name ");
     }
     static function cmdList(p){
         local lvl = cache[p.ID].Level, cmds= [""], list = [], q= ::QuerySQL(db, "SELECT * FROM cmds ");
             while( ::GetSQLColumnData(q,0) ){
                 if(::GetSQLColumnData(q,1).tointeger() <= lvl ){
-                    //cmds += ("" + ::GetSQLColumnData(q,0)+ ", ");
                     cmds[lvl] += (::GetSQLColumnData(q,0) + ", ");
-                    //list[lvl] = split( cmds[lvl]);
                 }
                 ::GetSQLNextRow( q );
             }
