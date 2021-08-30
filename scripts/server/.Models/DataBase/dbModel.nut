@@ -6,15 +6,15 @@ class dbModel extends dbConfig{
     row      = null;
     from     = null;
     atribute = null;
-    driver = null;
-    command = null;
+    driver   = null;
+    command  = null;
 
     constructor(){
       this.driver = dbDriver().connect();
     }
     
     static function query(q){
-      local query = this.driver.query(q);
+      local  query = this.driver.query(q);
       return query;
     }
 
@@ -23,9 +23,11 @@ class dbModel extends dbConfig{
       this.driver.query(this.command);
       return this.command;
     }
+
     static function create() {
-      this.command = "CREATE TABLE IF NOT EXSITS "+this.table+" "+this.columns;
+      this.command = "CREATE TABLE IF NOT EXISTS "+this.table+" ("+this.columns+")";
       this.driver.query(this.command);
+      debug("db","MIGRATION RESULT:",this.command);
       return this.command;
     }
    

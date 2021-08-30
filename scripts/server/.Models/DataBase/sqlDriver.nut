@@ -5,6 +5,9 @@ class sqlDriver extends dbDriver{
         this.connect = ::ConnectSQL(this.name);
     }
     static function query(q) {
-        return ::QuerySQL(this.connect,q);
+        try{
+            return ::QuerySQL(this.connect,q);
+        } catch(e) print( "***~~SQL QUERY ERROR~~***: " + e );
+        
     }  
 }

@@ -41,7 +41,7 @@ function onScriptLoad(){
 	local test = playerModel();
 	local a = test.find("Malina");
 	//local b = test.get("ip");
-	if(a)print(a);
+	if(a)print(GetSQLColumnData(a,0));
 	//if(b)print(b);
 	//
 
@@ -72,15 +72,15 @@ function onScriptLoad(){
 	//onAddCommand("set","0","");
 	//onAddCommand("jail","0","");
 	dbManager.migrate(
-		"test9",
+		"testx",
 		[
 			string("nick"),
 			unique.string("email"),
-			nullable.defaul.integer("kasa",0),
-			nullable.defaul.integer("bank",0),
+			nullable.defaul.integer("kasa",'0'),
+			nullable.defaul.integer("bank",'0'),
 			timestamp("data_rejestracji")
 		]
-	)
+	);
 }
 function relo(){
 	DisconnectSQL(db);

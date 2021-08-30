@@ -27,8 +27,8 @@ dbManager   <-null;
 ::dofile( "scripts/server/.Models/DataBase/dbDriver.nut" );
 ::dofile( "scripts/server/.Models/DataBase/mysqlDriver.nut" );
 ::dofile( "scripts/server/.Models/DataBase/sqlDriver.nut" );
-::dofile( "scripts/server/.Models/DataBase/dbModel.nut" );
 ::dofile( "scripts/server/.Models/DataBase/dbTypes.nut" );
+::dofile( "scripts/server/.Models/DataBase/dbModel.nut" );
 
 /**
 *@LOADING SERVER MODELS

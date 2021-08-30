@@ -8,6 +8,8 @@ class mysqlDriver extends dbDriver{
         this.connect = ::mysql_connect(this.ip, this.user, this.pass, this.connect);
     }
     static function query() {
-        return ::mysql_query(this.connect,this.command);
+        try{
+            return ::mysql_query(this.connect,this.command);
+        } catch(e) print( "***~~MySQL QUERY ERROR~~***: " + e );
     }
 }

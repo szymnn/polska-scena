@@ -1,6 +1,7 @@
 class dbController extends dbModel{
     constructor(){
-        columns = "";
+        base.constructor();
+        this.columns = "";
     }
     static function migrate(tab = null, columns=[]) {
         foreach(a,column in columns){
@@ -8,9 +9,7 @@ class dbController extends dbModel{
             else this.columns += column + ", ";
         }
         this.table = tab;
-        debug("db","MIGRATION RESULT:",this.table,this.columns);
-        create(this.table,this.columns);
-        
+        create();
     }
     static function rollback() {
         
