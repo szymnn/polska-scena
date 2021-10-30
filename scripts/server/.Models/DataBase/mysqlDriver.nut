@@ -7,9 +7,9 @@ class mysqlDriver extends dbDriver{
         this.pass    = ::ReadIniString("configuration.ini","DATABASE","db_pass");
         this.connect = ::mysql_connect(this.ip, this.user, this.pass, this.connect);
     }
-    static function query() {
+    static function query(q) {
         try{
-            return ::mysql_query(this.connect,this.command);
+            return ::mysql_query(this.connect,q);
         } catch(e) print( "***~~MySQL QUERY ERROR~~***: " + e );
     }
 }

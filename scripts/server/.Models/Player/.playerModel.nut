@@ -1,5 +1,5 @@
 class playerModel extends dbModel{
-	
+
     Kills 		= 0;
 	Dead 		= 0;
 	Bank 		= 0;
@@ -16,8 +16,9 @@ class playerModel extends dbModel{
     Joins		= 0;
 	Lang 		= -1;
     player      = null;
+	u 			= null;
 	name 		= null;
-	
+
     constructor(){
 		base.constructor();
 		this.name	 = this.default_user_name;

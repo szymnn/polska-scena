@@ -3,22 +3,33 @@ class dbController extends dbModel{
         base.constructor();
         this.columns = "";
     }
-    static function migrate(tab = null, columns=[]) {
-        foreach(a,column in columns){
-            if(a+1==columns.len()) this.columns += column + "";
+    static function migrate(tab = null, cols=[]) {
+        foreach(a,column in cols){
+            if(a+1==cols.len()) this.columns += column + "";
             else this.columns += column + ", ";
         }
         this.table = tab;
-        create();
+        return create();
     }
     static function rollback() {
-        
+
     }
     static function drop() {
-        
+
     }
     static function add() {
-        
+
+    }
+    static function find(tab = null, cols=[]) {
+        // foreach(a,column in cols){
+        //     if(a+1==cols.len()) this.columns += column + "";
+        //     else this.columns += column + ", ";
+        // }
+        // this.table = tab;
+        // print(create());
+    }
+    static function findall(...) {
+
     }
 }
 dbManager = dbController();

@@ -189,7 +189,7 @@ class serverController{
         print(dump);
     }
     err = function () {
-        error("***~~DATABASE~~*** WRONG DB_TYPE IN CONFIGURATION.INI");
+        system("echo [91m[DATABASE ERROR][0m [97mWRONG DB_TYPE IN CONFIGURATION.INI[0m");
     }
 }
 var = serverController;
@@ -201,9 +201,58 @@ debug = function(typ,...) {
         }
         switch(typ){
             case "db":
-                error("***~~DATABASE~~*** "+dump+"\n");
+                system("echo [95m[DATABASE][0m [97m"+dump+"[0m");
+                //system("echo:^<ESC^>[37m[35m "+"***~~DATABASE~~***[0m [37m "+dump+"[0m\n");
             break;
         }
             
     }
 }
+// print = function(...) {
+//     if(vargv.len()>0){
+//         local dump = "", var = "", var1 ="";
+//         if(vargv[0]!=null){
+//             var = vargv[0];
+//             if(vargv[1])var1 = vargv[1];
+//             foreach(a,values in vargv){
+//                 if(var1){
+//                     if(a>1)dump += values + " ";
+//                 }else {
+//                     if(a>0)dump += values + " ";
+//                 }
+//             }
+//             if(var1){
+//                 if(var.tointeger()==0 ||var.tointeger()==1 || var.tointeger()==2  || var.tointeger()==3 || var.tointeger()==4 || var.tointeger()==5 || var.tointeger()==6 || var.tointeger()==7)
+//                 {
+//                     switch(var){
+//                         case 0:
+//                             return system("echo [90m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 1:
+//                             return system("echo [91m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 2:
+//                             return system("echo [92m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 3:
+//                             return system("echo [93m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 4:
+//                             return system("echo [94m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 5:
+//                             return system("echo [95m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 6:
+//                             return system("echo [96m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                         case 7:
+//                             return system("echo [97m"+var1+" [90m"+dump+"[0m");
+//                         break;
+//                     }
+//                 }else system("echo [96m[SCRIPT][0m [90m"+dump+"[0m");  
+//             }else system("echo [96m[SCRIPT][0m [90m"+var+"[0m");  
+//         }else system("echo [91m[ERROR][0m [97mWRONG PRINT() SYTNAX[0m"); 
+//     }else system("echo [91m[ERROR][0m [97mWRONG PRINT() SYTNAX[0m"); 
+    
+// }

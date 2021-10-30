@@ -10,7 +10,7 @@ class dbDriver extends dbConfig{
     //default_user_row	= this.default_user_row;
     //default_user_table	= this.default_user_table;
     constructor(){
-        
+
     }
     static function connect() {
         if(this.type=="sql")return sqlDriver();
@@ -20,5 +20,5 @@ class dbDriver extends dbConfig{
     static function query(q) {
         this.command = q;
     }
-    
+
 }

@@ -1,7 +1,12 @@
-class cmdController {
+class cmdController extends dbModel{
+    constructor(){
+		base.constructor();
+        this.row	 = "cmds";
+	    this.table   = "cmd";
+    }
     static function can(p,cmd){
         local canModel = cmdModel();
-        local q= ::QuerySQL(db, "SELECT * FROM cmds WHERE cmd='"+cmd+"'");
+        local q= findall();
 		if(q){
             canModel.need  = ::GetSQLColumnData(q,1).tointeger();
             if(::GetSQLColumnData(q,2)!="")canModel.secure = ::GetSQLColumnData(q,2);

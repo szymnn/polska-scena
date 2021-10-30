@@ -18,41 +18,40 @@ class PlayerStaticController extends playerModel {
             //local q = ::QuerySQL(db,"UPDATE users SET cash= '"+cache[player.ID].player.Cash+"' WHERE nick = '"+player.Name+"'");
             local q = format("UPDATE users SET ( level = '%i', kills= '%i', dead = '%i', joins = '%i', cash= '%i', bank = '%i', mute= '%i', nogoto = '%i', jail = '%i', skin = '%i' WHERE nick = '%s')"
             cache[player.ID].Level, cache[player.ID].Kills,cache[player.ID].Dead,cache[player.ID].Joins,cache[player.ID].player.Cash,cache[player.ID].Bank,cache[player.ID].Mute,cache[player.ID].Nogoto, cache[player.ID].Jail,cache[player.ID].player.Skin, cache[player.ID].player.Name);
-            ::QuerySQL(db,q);
             print(cache[player.ID].player.Name+" HAS UPDATED STATS");
             ::MessagePlayer(show.info + show.update_stats[cache[player.ID].Lang],player);
             cache[ player.ID ] = null;
-            
-                
+            return ::QuerySQL(db,q);
 		}
-		
+
 	}
     static function downloadStats(player) {
-        local plModel = playerModel();
-        plModel.Lang = 1;
+        local player = FindPlayer(player.ID);
+        cache[player.ID] = playerModel();
+        cache[player.ID].Lang = 1;
         local q = find(player.Name,"nick","users");
         if(!q){
-            plModel.Register = false;
+            cache[player.ID].Register = false;
         }else{
             if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
-                plModel.Login 	    = true;
-                plModel.Register	= true;	
-                plModel.Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
-                plModel.Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
-                plModel.Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
-                plModel.Bank 		= ::GetSQLColumnData( q, 10).tointeger();
-                plModel.Mute 		= ::GetSQLColumnData( q, 11).tointeger();
-                plModel.Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
-                plModel.Jail 		= ::GetSQLColumnData( q, 13).tointeger();
-                player.Cash         = ::GetSQLColumnData( q, 9 ).tointeger();
-                player.Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
-                plModel.Lang        = 1;
-                plModel.Fuel 		= 0;
-                plModel.Spree 		= 0;
-			}else plModel.Register = true;
+                cache[player.ID].Login 	    = true;
+                cache[player.ID].Register	= true;
+                cache[player.ID].Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
+                cache[player.ID].Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
+                cache[player.ID].Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
+                cache[player.ID].Bank 		= ::GetSQLColumnData( q, 10).tointeger();
+                cache[player.ID].Mute 		= ::GetSQLColumnData( q, 11).tointeger();
+                cache[player.ID].Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
+                cache[player.ID].Jail 		= ::GetSQLColumnData( q, 13).tointeger();
+                cache[player.ID].Cash        = ::GetSQLColumnData( q, 9 ).tointeger();
+                cache[player.ID].Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
+                cache[player.ID].Lang       = 1;
+                cache[player.ID].Fuel 		= 0;
+                cache[player.ID].Spree 		= 0;
+			}else cache[player.ID].Register = true;
 		}
-        plModel.player = player;
-        return plModel;
+        cache[player.ID].u = player;
+        return cache[player.ID];
     }
     static function auth(p, pass){
         local q = find(p.Name,"nick","users"),c;
@@ -76,7 +75,7 @@ class PlayerStaticController extends playerModel {
         }
         else return( show.info + show._alreadyLogged[cache[p.ID].Lang]);
     }
-    static function unjail( p ) {   
+    static function unjail( p ) {
       local p = ::FindPlayer(p);
 		if( cache[ p.ID ].Jail == 1 ){
             cache[ p.ID ].Jail = 0;

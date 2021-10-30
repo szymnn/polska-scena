@@ -1,3 +1,7 @@
+BASE_OS_TYPE<-null;
+if(system("cls"))BASE_OS_TYPE=0;
+else BASE_OS_TYPE=1;
+
 class serverModel{
     SetDeathmatchScoreboard         = false;
     SetDeathMessages                = false;

@@ -1,4 +1,4 @@
-function onServerStart(){	
+function onServerStart(){
 }
 function onActorDeath( actorid )
 {
@@ -12,17 +12,16 @@ function onServerStop(){
 }
 
 function onScriptLoad(){
-	
 	dofile( "scripts/server/loader.nut" );
 	serverController.StartServer();
 	SetSpawnPlayerPos(-924.16, 1057.98, 15.6029);
 	SetSpawnCameraPos( -925.6366, 1039.8380, 13.0848 );
-	SetSpawnCameraLook( -925.1487, 1048.4241, 13.2005 );  
+	SetSpawnCameraLook( -925.1487, 1048.4241, 13.2005 );
 	//local test = dbController.create("test3", ["test", "test2", "test3"], [""], [",UNIQUE(test)"]);
-	// dbManager.create2( "users", 
-	// 	["nick", "pass", "IP", "UID", "UID2", "level", "kills", "dead", "joins", "cash", "bank", "mute", "nogoto", "jail", "skin", "gangID", "autospawn"], 
-	// 	[ "VARCHAR(32)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(32)"], 
-	// 	[",UNIQUE(nick)"] 
+	//  dbManager.migrate( "users",
+	//  	["nick", "pass", "IP", "UID", "UID2", "level", "kills", "dead", "joins", "cash", "bank", "mute", "nogoto", "jail", "skin", "gangID", "autospawn"],
+	//  	[ "VARCHAR(32)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(32)"],
+	//  	[",UNIQUE(nick)"]
 	// );
 	// dbManager.create2("vehicle",
 	// 	["name","cost","owner","sowner","model", "pos", "lock", "fuel", "tax", "color1", "color2", "tune"],
@@ -30,7 +29,7 @@ function onScriptLoad(){
 	// );
 	// dbManager.create2("cmds",
 	// 	["cmd", "lvl", "secure"],
-	// 	["VARCHAR(255)" ,  "VARCHAR(255)",  "VARCHAR(255)"], 
+	// 	["VARCHAR(255)" ,  "VARCHAR(255)",  "VARCHAR(255)"],
 	// 	[",UNIQUE(cmd)"]
 	// );
 	//local p= dbManager.select(["nick","pass"],"users","nick","malina","like");
@@ -40,20 +39,8 @@ function onScriptLoad(){
 	//test
 	local test = playerModel();
 	local a = test.find("Malina");
-	//local b = test.get("ip");
-	if(a)print(GetSQLColumnData(a,0));
-	//if(b)print(b);
-	//
+	if(a)print(GetSQLColumnData(a,1));
 
-	//find("nick","Malina");
-	//local c = from("users");
-	//if(GetSQLColumnData(c,0)=="Malina")print("OK2");
-	string("dupa");
-	nullable.string("dupa");
-	
-	//local d = findall("nick", "users");
-	//print(GetSQLColumnData(d,0));
-	/****************************/
 	if(GetPlayers()>0){
 		for( local n = 0; n < GetPlayers(); n++ ){
 			local player = FindPlayer( n );
@@ -76,11 +63,15 @@ function onScriptLoad(){
 		[
 			string("nick"),
 			unique.string("email"),
-			nullable.defaul.integer("kasa",'0'),
-			nullable.defaul.integer("bank",'0'),
+			nullable.defaul.integer("kasa",0),
+			nullable.defaul.integer("bank",0),
 			timestamp("data_rejestracji")
 		]
 	);
+	dbManager.find(["dupa","aa"]);
+	system("echo [107m [30mDATA BASE FRAMEWORK BY[0m [105mMALINA[0m [107m [30mHAS LOADED SUCCESUFL[0m\n");
+	//print("dupa");
+	//print(0,"gowno", "XD");
 }
 function relo(){
 	DisconnectSQL(db);
@@ -119,10 +110,9 @@ function onScriptUnload(){
 // =========================================== P L A Y E R   E V E N T S ==============================================
 
 function onPlayerJoin( player ){
-	local temp = Player.playerStaticController(player);
+	local temp = PlayerStaticController();
+	temp.downloadStats(player);
 	print(temp.Login);
-	cache[player.ID] = temp;
-	player+=cache[player.ID];
 	MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 }
 
@@ -188,14 +178,14 @@ function onPlayerCommand( player, cmd, text ){
 								break;
 								case "bank":
 									cache[plr.ID].plr += value;
-								break;	
+								break;
 								case "kills":
 									cache[plr.ID].Kills = value;
 									plr.Score = cache[plr.ID].Kills;
-								break;	
+								break;
 								case "dead":
 									cache[plr.ID].Dead = value;
-								break;	
+								break;
 							}
 						}else MessagePlayer(show.sytnax[cache[player.ID].Lang] + show.player_value[cache[player.ID].Lang],player);
 					}else MessagePlayer(show.info + "money / lvl / bank / kills / dead",player);
@@ -203,7 +193,7 @@ function onPlayerCommand( player, cmd, text ){
 			}
 			else if (cmd == "jail"){
 				if(text){
-					local target = GetTok( text, " ", 1); 
+					local target = GetTok( text, " ", 1);
 					local value  = GetTok( text, " ", 2, NumTok( text, " " ) );
 					if(target ){
 						if(value){
@@ -240,7 +230,7 @@ function onPlayerCommand( player, cmd, text ){
 	// 	else if(cmd == "t")
 	// 	{
 	// 		local x = 390.21;
-	// 		create_actor( "lance", 5, 405.954, -459.039, 10.1126, 1.5 ); 
+	// 		create_actor( "lance", 5, 405.954, -459.039, 10.1126, 1.5 );
 	// 		return 1;
 	// 	}
 	// 	else if (cmd=="spawn"){
@@ -262,7 +252,7 @@ function onPlayerCommand( player, cmd, text ){
 	// 	// else if(cmd=="set"){
 	// 	// 	if(text){
 	// 	// 		if(text == "mon"){
-	// 	// 			local target = GetTok( text, " ", 2); 
+	// 	// 			local target = GetTok( text, " ", 2);
 	// 	// 			local value  = GetTok( text, " ", 3, NumTok( text, " " ) );
 	// 	// 			if(target ){
 	// 	// 				if(value){
@@ -273,7 +263,7 @@ function onPlayerCommand( player, cmd, text ){
 	// 	// }
 	// 	else if (cmd =="smon"){
 	// 		if(text){
-	// 			local target = GetTok( text, " ", 1); 
+	// 			local target = GetTok( text, " ", 1);
 	// 			local value  = GetTok( text, " ", 2, NumTok( text, " " ) );
 	// 			if(target ){
 	// 				if(value){
@@ -282,11 +272,11 @@ function onPlayerCommand( player, cmd, text ){
 
 	// 				}
 	// 			}
-				
+
 	// 		}else MessagePlayer("skladnia: <gracz> <wartosc>",player);
 	// 	}
 	// }
-	
+
 	return 1;
 }
 
@@ -440,11 +430,11 @@ function onConsoleInput(cmd, text)
 	if ( cmd == "reload" ){
 	onScriptReload();
 	}
-	
+
 }
 function msg(id,player){
 	switch(id){
-		case 1: 
+		case 1:
 			MessagePlayer(show.info   + cmd_exists, player);
 		break;
 		case 1.1:
@@ -453,6 +443,6 @@ function msg(id,player){
 		case 1.2:
 			MessagePlayer(show.info   + cmd_secure, player);
 		break;
-   
+
 	}
-} 
+}
