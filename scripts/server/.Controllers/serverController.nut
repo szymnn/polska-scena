@@ -87,7 +87,7 @@ class serverController{
             ::WriteIniString( "configuration.ini", "DATABASE", "db_user", "" );
             ::WriteIniString( "configuration.ini", "DATABASE", "db_pass", "" );
             ::WriteIniString( "configuration.ini", "DATABASE", "db_ip", "" );
-            ::WriteIniString( "configuration.ini", "DATABASE", "db_port", "3306" );
+            ::WriteIniInteger( "configuration.ini", "DATABASE", "db_port", 3306 );
             /*****************************STRINGS***********************************************/
             ::WriteIniString(           "configuration.ini", "SERVER", "SetServerName","");
             ::WriteIniString(             "configuration.ini", "SERVER", "SetPassword","");

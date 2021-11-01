@@ -3,7 +3,7 @@ class mysqlDriver extends dbDriver{
         this.type    = "mysql";
         this.name    = ::ReadIniString("configuration.ini","DATABASE","db_name");
         this.ip      = ::ReadIniString("configuration.ini","DATABASE","db_ip");
-        this.port    = ::ReadIniString("configuration.ini","DATABASE","db_port");
+        this.port    = ::ReadIniInteger("configuration.ini","DATABASE","db_port");
         this.user    = ::ReadIniString("configuration.ini","DATABASE","db_user");
         this.pass    = ::ReadIniString("configuration.ini","DATABASE","db_pass");
         this.connect = ::mysql_connect(this.ip, this.user, this.pass, this.name, this.port);
