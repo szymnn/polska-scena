@@ -25,8 +25,7 @@ class dbModel extends dbDriver{
     }
 
     static function create() {
-      //this.command = "CREATE TABLE IF NOT EXISTS "+this.table+"( "+this.columns+" )";
-      this.command = "CREATE TABLE STATS ( Name VARCHAR(32), Kills INT, Dead INT, Joins INT, Cash INT, Bank INT, Level INT, Mute INT, Nogoto INT, Cela INT, Walizki INT, KeyCard INT , Skin INT, GangID INT, IP VARCHAR(32), Pass VARCHAR(32), UnikalneID VARCHAR(32), AutoSpawn VARCHAR(32), Kody VARCHAR(32) )";
+      this.command = "CREATE TABLE IF NOT EXISTS "+this.table+"( "+this.columns+" )";
       query(this.command);
       return this.command;
     }
