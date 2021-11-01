@@ -39,7 +39,7 @@ function onScriptLoad(){
 	//test
 	local test = playerModel();
 	local a = test.find("Malina");
-	if(a)print(GetSQLColumnData(a,1));
+	if(a)print(GetSQLColumnData(a,0));
 
 	if(GetPlayers()>0){
 		for( local n = 0; n < GetPlayers(); n++ ){
@@ -49,15 +49,7 @@ function onScriptLoad(){
 			MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 		}
 	}
-	AnnounceAll("",6);
-	//onAddCommand("reg","0","");
-	//onAddCommand("log","0","");
-	//onAddCommand("login","0","");
-	//onAddCommand("smon","10","test");
-	//onAddCommand("cmds","0","");
-	//onAddCommand("help","0","");
-	//onAddCommand("set","0","");
-	//onAddCommand("jail","0","");
+
 	dbManager.migrate(
 		"testx",
 		[
@@ -68,6 +60,49 @@ function onScriptLoad(){
 			timestamp("data_rejestracji")
 		]
 	);
+	
+	dbManager.migrate(
+		"users",
+		[
+			unique.string("nick"),
+			string("pass"),
+			string("ip"),
+			string("uid"),
+			string("uid2"),
+			integer("level"),
+			integer("kills"),
+			integer("dead"),
+			integer("joins"),
+			integer("cash"),
+			integer("bank"),
+			nullable.defaul.booleans("mute",false),
+			nullable.defaul.booleans("nogoto",false),
+			nullable.defaul.booleans("jail",false),
+			defaul.integer("skin",51),
+			defaul.integer("gangID",0),
+			nullable.defaul.booleans("autospawn",false)
+		]
+	);
+
+	dbManager.migrate(
+		"cmds",
+		[
+			string("cmds"),
+			defaul.integer("lvl",0),
+			string("secure")
+		]
+	);
+
+	AnnounceAll("",6);
+	//onAddCommand("reg","0","");
+	//onAddCommand("log","0","");
+	//onAddCommand("login","0","");
+	//onAddCommand("smon","10","test");
+	//onAddCommand("cmds","0","");
+	//onAddCommand("help","0","");
+	//onAddCommand("set","0","");
+	//onAddCommand("jail","0","");
+
 	dbManager.find(["dupa","aa"]);
 	system("echo [107m [30mDATA BASE FRAMEWORK BY[0m [105mMALINA[0m [107m [30mHAS LOADED SUCCESUFL[0m\n");
 	//print("dupa");
