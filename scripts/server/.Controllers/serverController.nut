@@ -36,8 +36,8 @@ class serverController{
         config.SetTimeRate                     = ::GetTimeRate();
         config.SetVehiclesForcedRespawnHeight  = ::GetVehiclesForcedRespawnHeight();
         config.SetWallglitch                   = ::GetWallglitch();
-        config.SetWaterLevel                   = ::GetWaterLevel().tofloat();            
-        
+        config.SetWaterLevel                   = ::GetWaterLevel().tofloat();
+
     }
     static function saveConfig() {
         /*****************************STRINGS***********************************************/
@@ -64,7 +64,7 @@ class serverController{
         ::WriteIniBool(       "configuration.ini", "SERVER", "SetSyncFrameLimiter",config.SetSyncFrameLimiter);
         ::WriteIniBool(          "configuration.ini", "SERVER", "SetTaxiBoostJump",config.SetTaxiBoostJump);
         ::WriteIniBool(             "configuration.ini", "SERVER", "SetWallglitch",config.SetWallglitch);
-        ::WriteIniBool(             "configuration.ini", "SERVER", "SetWeaponSync",config.SetWeaponSync);               
+        ::WriteIniBool(             "configuration.ini", "SERVER", "SetWeaponSync",config.SetWeaponSync);
         /***************************** NUMBERS **************************************/
         ::WriteIniNumber(                 "configuration.ini", "SERVER", "SetWaterLevel",config.SetWaterLevel);
         ::WriteIniNumber(                    "configuration.ini", "SERVER", "SetGravity",config.SetGravity);
@@ -87,6 +87,7 @@ class serverController{
             ::WriteIniString( "configuration.ini", "DATABASE", "db_user", "" );
             ::WriteIniString( "configuration.ini", "DATABASE", "db_pass", "" );
             ::WriteIniString( "configuration.ini", "DATABASE", "db_ip", "" );
+            ::WriteIniString( "configuration.ini", "DATABASE", "db_port", "3306" );
             /*****************************STRINGS***********************************************/
             ::WriteIniString(           "configuration.ini", "SERVER", "SetServerName","");
             ::WriteIniString(             "configuration.ini", "SERVER", "SetPassword","");
@@ -163,7 +164,7 @@ class serverController{
             ::SetStuntBike(::ReadIniBool(                   "configuration.ini", "SERVER", "SetStuntBike"));
             ::SetSyncFrameLimiter(::ReadIniBool(            "configuration.ini", "SERVER", "SetSyncFrameLimiter"));
             ::SetTaxiBoostJump(::ReadIniBool(               "configuration.ini", "SERVER", "SetTaxiBoostJump"));
-            ::SetWallglitch(::ReadIniBool(                  "configuration.ini", "SERVER", "SetWallglitch"));            
+            ::SetWallglitch(::ReadIniBool(                  "configuration.ini", "SERVER", "SetWallglitch"));
             /***************************** NUMBERS **************************************/
             ::SetWaterLevel(::ReadIniNumber(                 "configuration.ini", "SERVER", "SetWaterLevel"));
             ::SetGravity(::ReadIniNumber(                    "configuration.ini", "SERVER", "SetGravity"));
@@ -205,7 +206,7 @@ debug = function(typ,...) {
                 //system("echo:^<ESC^>[37m[35m "+"***~~DATABASE~~***[0m [37m "+dump+"[0m\n");
             break;
         }
-            
+
     }
 }
 // print = function(...) {
@@ -250,9 +251,9 @@ debug = function(typ,...) {
 //                             return system("echo [97m"+var1+" [90m"+dump+"[0m");
 //                         break;
 //                     }
-//                 }else system("echo [96m[SCRIPT][0m [90m"+dump+"[0m");  
-//             }else system("echo [96m[SCRIPT][0m [90m"+var+"[0m");  
-//         }else system("echo [91m[ERROR][0m [97mWRONG PRINT() SYTNAX[0m"); 
-//     }else system("echo [91m[ERROR][0m [97mWRONG PRINT() SYTNAX[0m"); 
-    
+//                 }else system("echo [96m[SCRIPT][0m [90m"+dump+"[0m");
+//             }else system("echo [96m[SCRIPT][0m [90m"+var+"[0m");
+//         }else system("echo [91m[ERROR][0m [97mWRONG PRINT() SYTNAX[0m");
+//     }else system("echo [91m[ERROR][0m [97mWRONG PRINT() SYTNAX[0m");
+
 // }

@@ -4,6 +4,7 @@ class dbDriver extends dbConfig{
     user    = null;
     pass    = null;
     ip      = null;
+    port    = null;
     connect = null;
     command = null;
     //default_user_name	= this.default_user_name;
