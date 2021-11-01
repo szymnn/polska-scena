@@ -10,6 +10,7 @@ class mysqlDriver extends dbDriver{
     }
     static function query(q) {
         try{
+            debug("db",q);
             return ::mysql_query(this.connect,q);
         } catch(e) print( "***~~MySQL QUERY ERROR~~***: " + e );
     }

@@ -106,7 +106,7 @@ nullable<-{
             return column;
         }
     }
-    
+
 }
 /*************UNIQUE**************/
 unique <-{

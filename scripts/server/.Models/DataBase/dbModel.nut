@@ -1,4 +1,4 @@
-class dbModel extends dbConfig{
+class dbModel extends dbDriver{
     /*ABSTRACT*/
     table    = null;
     columns  = null;
