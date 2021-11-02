@@ -15,7 +15,7 @@ timestamp=function(column) {
     return column;
 }
 booleans=function(column) {
-    column = "" + column + " BOOL NOT NULL";
+    column = "" + column + " BOOLEAN NOT NULL";
     debug("db","RETURNED:",column);
     return column;
 }
@@ -42,7 +42,7 @@ nullable<-{
         return column;
     }
     booleans=function(column) {
-        column = "" + column + " BOOL";
+        column = "" + column + " BOOLEAN";
         debug("db","RETURNED:",column);
         return column;
     }
@@ -68,7 +68,7 @@ nullable<-{
             return column;
         }
         booleans=function(column) {
-            column = "" + column + " BOOL UNIQUE";
+            column = "" + column + " BOOLEAN UNIQUE";
             debug("db","RETURNED:",column);
             return column;
         }
@@ -96,7 +96,7 @@ nullable<-{
             return column;
         }
         booleans=function(column, value) {
-            column = "" + column + " BOOL DEFAULT '"+value+"'";
+            column = "" + column + " BOOLEAN DEFAULT '"+value+"'";
             debug("db","RETURNED:",column);
             return column;
         }
@@ -126,7 +126,7 @@ unique <-{
         return column;
     }
     booleans=function(column) {
-        column = "" + column + " BOOL NOT NULL UNIQUE";
+        column = "" + column + " BOOLEAN NOT NULL UNIQUE";
         debug("db","RETURNED:",column);
         return column;
     }
@@ -154,7 +154,7 @@ defaul <- {
         return column;
     }
     booleans=function(column, value) {
-        column = "" + column + " BOOL NOT NULL DEFAULT '"+value+"'";
+        column = "" + column + " BOOLEAN NOT NULL DEFAULT '"+value+"'";
         debug("db","RETURNED:",column);
         return column;
     }

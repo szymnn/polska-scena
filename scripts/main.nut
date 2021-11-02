@@ -60,7 +60,7 @@ function onScriptLoad(){
 			timestamp("data_rejestracji")
 		]
 	);
-	
+
 	dbManager.migrate(
 		"users",
 		[

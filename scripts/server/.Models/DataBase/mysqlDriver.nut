@@ -15,3 +15,12 @@ class mysqlDriver extends dbDriver{
         } catch(e) print( "***~~MySQL QUERY ERROR~~***: " + e );
     }
 }
+
+//    static function query(q) {
+//        try{
+//            debug("db",q);
+//            local d = ::mysql_query(this.connect,q);
+//            ::mysql_free_result( d );
+//        } catch(e) print( "***~~MySQL QUERY ERROR~~***: " + e );
+//    }
+//}
