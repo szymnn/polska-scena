@@ -177,31 +177,28 @@ function onPlayerCommand( player, cmd, text ){
 			else if (cmd =="set"){
 				if(text){
 					local target = GetTok( text, " ", 2), value  = GetTok( text, " ", 3, NumTok( text, " " ) );
-					print( target +" " + value);
-					//local text = split( text, " " );
 					if(target){
 						if(value){
 							local plr = FindPlayer( target );
 							print(plr.ID);
 							value = value.tointeger();
-							//print(GetTok( text, " ", 1) + plr + value)
+							local gamer = cache[plr.ID];
 							switch(GetTok( text, " ", 1)){
 								case "money":
-									print(cache[plr.ID].Mute);
-									cache[plr.ID].player.Cash += value;
+									gamer.setCash(gamer.getCash() + value);
 								break;
 								case "lvl":
-									cache[plr.ID].plr = value;
+									gamer.setLevel(value);
 								break;
 								case "bank":
-									cache[plr.ID].plr += value;
+									gamer.setBank(gamer.getBank() + value );
 								break;
 								case "kills":
-									cache[plr.ID].Kills = value;
-									plr.Score = cache[plr.ID].Kills;
+									gamer.setKills(gamer.getKills() + value );
+									plr.Score = gamer.getKills();
 								break;
 								case "dead":
-									cache[plr.ID].Dead = value;
+									gamer.setDead(gamer.getDead() + value );
 								break;
 							}
 						}else MessagePlayer(show.sytnax[cache[player.ID].Lang] + show.player_value[cache[player.ID].Lang],player);

@@ -42,14 +42,34 @@ class PlayerStaticController extends playerModel {
         gamer.setKills(0);
         local q = dbManager.find(gamer.getName(),dbManager.row,dbManager.table);
         if(q && mysql_num_rows( q )>0){
+            gamer.setRegister(true);
             if(dbManager.type == "sql"){
-                gamer.setRegister(true);
-                gamer.setLogin(false);
-                print("sql");
+    
+                gamer.setPass(::base64_decode(::GetSQLColumnData( q, 1 )));
+                gamer.setUID( ::GetSQLColumnData( q, 3 ));
+                gamer.setUID2(::GetSQLColumnData( q, 4 ));
+
+                if(gamer.getUID()==p.UniqueID || gamer.getUID2()==p.UniqueID2){
+                    gamer.setLogin(true);
+                    gamer.setLevel(::GetSQLColumnData( q, 5));                      
+                    gamer.setKills(::GetSQLColumnData( q, 6 ));
+                    gamer.setDead(::GetSQLColumnData( q, 7 ));
+                    gamer.setJoins(::GetSQLColumnData( q, 8));
+                    gamer.setCash(::GetSQLColumnData( q, 9 ));
+                    gamer.setBank(::GetSQLColumnData( q, 10 ));
+                    gamer.setMute(::GetSQLColumnData( q, 11 ));
+                    gamer.setNogoto(::GetSQLColumnData( q, 12 ));
+                    gamer.setJail(::GetSQLColumnData( q, 13 ));
+                    gamer.setSkin(::GetSQLColumnData( q, 14 ));
+                    gamer.setGang(::GetSQLColumnData( q, 15 ));
+                    gamer.setAutospawn(::GetSQLColumnData( q, 16 ));
+
+                }else gamer.setLogin(false);
+                p.Cash  = gamer.getCash();
+                p.Score = gamer.getKills();
             }
             else if(dbManager.type=="mysql"){
-                gamer.setRegister(true);
-
+                
                 local stats = mysql_fetch_row(q); 
     
                 gamer.setPass(::base64_decode(stats[1]));
@@ -59,7 +79,7 @@ class PlayerStaticController extends playerModel {
                 if(gamer.getUID()==p.UniqueID || gamer.getUID2()==p.UniqueID2){
                     gamer.setLogin(true);
                     gamer.setLevel(stats[5]);                      
-                    gamer.setCash(stats[6]);
+                    gamer.setKills(stats[6]);
                     gamer.setDead(stats[7]);
                     gamer.setJoins(stats[8]);
                     gamer.setCash(stats[9]);
@@ -72,54 +92,42 @@ class PlayerStaticController extends playerModel {
                     gamer.setAutospawn(stats[16]);
 
                 }else gamer.setLogin(false);
-                
+                p.Cash  = gamer.getCash();
+                p.Score = gamer.getKills();
             }
         }
-            /*
-            if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
-                cache[player.ID].Login 	    = true;
-                cache[player.ID].Register	= true;
-                cache[player.ID].Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
-                cache[player.ID].Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
-                cache[player.ID].Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
-                cache[player.ID].Bank 		= ::GetSQLColumnData( q, 10).tointeger();
-                cache[player.ID].Mute 		= ::GetSQLColumnData( q, 11).tointeger();
-                cache[player.ID].Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
-                cache[player.ID].Jail 		= ::GetSQLColumnData( q, 13).tointeger();
-                cache[player.ID].Cash        = ::GetSQLColumnData( q, 9 ).tointeger();
-                cache[player.ID].Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
-                cache[player.ID].Lang       = 1;
-                cache[player.ID].Fuel 		= 0;
-                cache[player.ID].Spree 		= 0;
-			}else cache[player.ID].Register = true;
-            */
-
         return cache[p.ID];
     }
     static function auth(p, pass){
         local gamer = cache[p.ID];
         local q = dbManager.find(p.Name,dbManager.row,dbManager.table),c;
 		if(gamer.getRegister()==false){
-			if(q) return(show.info + show.busy[gamer.getLang()]);
+			if(q && mysql_num_rows( q )>0) return(show.info + show.busy[gamer.getLang()]);
 			else{
                 gamer.setPass(pass);
                 gamer.save();
-                
-				// ::QuerySQL(db,"INSERT INTO users( nick, pass, secure, IP, UID, UID2, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) values('"+p.Name+"', '"+::base64_encode(pass)+"','','"+p.IP+"','"+p.UniqueID+"','"+p.UniqueID2+"','0','0','0','0','0','0','0','0','0','1','0','0')");
 				if(gamer.getLang()==0) c = "Your password is: [#FF0000] "+ gamer.getPass() +" - don't forgot it :)";
                 else c = "twoje hsalo to: [#FF0000] "+ gamer.getPass() +" - nie zapomnij go :)";
-                return( show.info + show.reg_succes[gamer.getLang()] + c);
+                return( MessagePlayer(show.info + show.reg_succes[gamer.getLang()] + c,p));
 			}
 		}
         else if(gamer.getLogin()==false){
             if(dbManager.type=="mysql"){
                 if(q && mysql_num_rows( q )>0 ){
-                    if(pass==gamer.getPass()) gamer.setLogin(true);
+                    if(pass==gamer.getPass()) {
+                        gamer.setLogin(true);
+                        gamer.setUID(p.UniqueID);
+                        gamer.setUID2(p.UniqueID2);
+                    }
                 }else return (show.info + show._wrongPass[gamer.getLang()]);
             }
             else if(dbManager.type=="mysql"){
                 if(q && mysql_num_rows( q )>0 ){
-                    if(pass== gamer.getPass())  gamer.setLogin(true);
+                    if(pass== gamer.getPass())  {
+                        gamer.setLogin(true);
+                        gamer.setUID(p.UniqueID);
+                        gamer.setUID2(p.UniqueID2);
+                    }
                 }else return (show.info + show._wrongPass[gamer.getLang()]);
             }
             
