@@ -90,16 +90,18 @@ function onScriptLoad(){
 	//print(0,"gowno", "XD");
 }
 function relo(){
-	DisconnectSQL(db);
+	if(dbManager.driver=="sql")DisconnectSQL(db);
+	else if(dbManager.driver=="mysql")mysql_close(db);
 	ReloadScripts();
 	}
 function onScriptReload(){
 	if(GetPlayers()>0){
 		for( local n = 0; n < GetPlayers(); n++ ){
 			local player = FindPlayer( n );
-			if(cache[player.ID].Login){
-				PlayerStaticController.updateStats(player);
-				MessagePlayer(show.server + show.unload_script[cache[player.ID].Lang],player);
+			local gamer  = cache[player.ID];
+			if(gamer.getLogin()==true){
+				gamer.save();
+				MessagePlayer(show.server + show.unload_script[gamer.getLang()],player);
 			}
 		}
 	}
@@ -186,6 +188,7 @@ function onPlayerCommand( player, cmd, text ){
 							switch(GetTok( text, " ", 1)){
 								case "money":
 									gamer.setCash(gamer.getCash() + value);
+									plr.Cash = gamer.getCash();
 								break;
 								case "lvl":
 									gamer.setLevel(value);
@@ -204,6 +207,9 @@ function onPlayerCommand( player, cmd, text ){
 						}else MessagePlayer(show.sytnax[cache[player.ID].Lang] + show.player_value[cache[player.ID].Lang],player);
 					}else MessagePlayer(show.info + "money / lvl / bank / kills / dead",player);
 				}else MessagePlayer(show.info + "money / lvl / bank / kills / dead",player);
+			}
+			else if (cmd == "restart"){
+				onScriptReload();
 			}
 			else if (cmd == "jail"){
 				if(text){
