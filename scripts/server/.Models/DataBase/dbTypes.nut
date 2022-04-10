@@ -86,7 +86,7 @@ nullable<-{
             return column;
         }
         integer=function(column, value) {
-            column = "" + column + " INT(255) DEFAULT '"+value+"'";
+            column = "" + column + " INT(255) DEFAULT "+value+"";
             debug("db","RETURNED:",column);
             return column;
         }
@@ -96,12 +96,12 @@ nullable<-{
             return column;
         }
         booleans=function(column, value) {
-            column = "" + column + " BOOLEAN DEFAULT '"+value+"'";
+            column = "" + column + " BOOLEAN DEFAULT "+value+"";
             debug("db","RETURNED:",column);
             return column;
         }
         float =function(column, value) {
-            column = "" + column + " FLOAT(255) DEFAULT '"+value+"'";
+            column = "" + column + " FLOAT(255) DEFAULT "+value+"";
             debug("db","RETURNED:",column);
             return column;
         }
@@ -144,7 +144,7 @@ defaul <- {
         return column;
     }
     integer=function(column, value) {
-        column = "" + column + " INT(255) NOT NULL DEFAULT '"+value+"'";
+        column = "" + column + " INT(255) NOT NULL DEFAULT "+value+"";
         debug("db","RETURNED:",column);
         return column;
     }
@@ -154,12 +154,12 @@ defaul <- {
         return column;
     }
     booleans=function(column, value) {
-        column = "" + column + " BOOLEAN NOT NULL DEFAULT '"+value+"'";
+        column = "" + column + " BOOLEAN NOT NULL DEFAULT "+value+"";
         debug("db","RETURNED:",column);
         return column;
     }
     float =function(column, value) {
-        column = "" + column + " FLOAT(255) NOT NULL DEFAULT '"+value+"'";
+        column = "" + column + " FLOAT(255) NOT NULL DEFAULT "+value+"";
         debug("db","RETURNED:",column);
         return column;
     }

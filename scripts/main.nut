@@ -17,26 +17,7 @@ function onScriptLoad(){
 	SetSpawnPlayerPos(-924.16, 1057.98, 15.6029);
 	SetSpawnCameraPos( -925.6366, 1039.8380, 13.0848 );
 	SetSpawnCameraLook( -925.1487, 1048.4241, 13.2005 );
-	//local test = dbController.create("test3", ["test", "test2", "test3"], [""], [",UNIQUE(test)"]);
-	//  dbManager.migrate( "users",
-	//  	["nick", "pass", "IP", "UID", "UID2", "level", "kills", "dead", "joins", "cash", "bank", "mute", "nogoto", "jail", "skin", "gangID", "autospawn"],
-	//  	[ "VARCHAR(32)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(255)",  "VARCHAR(32)"],
-	//  	[",UNIQUE(nick)"]
-	// );
-	// dbManager.create2("vehicle",
-	// 	["name","cost","owner","sowner","model", "pos", "lock", "fuel", "tax", "color1", "color2", "tune"],
-	// 	["VARCHAR(32)",  "VARCHAR(25)",  "TEXT",  "TEXT",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)",  "VARCHAR(32)"]
-	// );
-	// dbManager.create2("cmds",
-	// 	["cmd", "lvl", "secure"],
-	// 	["VARCHAR(255)" ,  "VARCHAR(255)",  "VARCHAR(255)"],
-	// 	[",UNIQUE(cmd)"]
-	// );
-	//local p= dbManager.select(["nick","pass"],"users","nick","malina","like");
-	//if(GetSQLColumnData(p,0)=="Malina")print("OK");
-	/**************FIND*************/
-	//;
-	//test
+
 	local test = playerModel();
 	local a = test.find("Malina");
 	if(a)print(GetSQLColumnData(a,0));
@@ -46,12 +27,12 @@ function onScriptLoad(){
 			local player = FindPlayer( n );
 			local temp = PlayerStaticController.downloadStats(player);
 			cache[player.ID] = temp;
-			MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
+			//MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 		}
 	}
 
 	dbManager.migrate(
-		"testx",
+		"testx2",
 		[
 			string("nick"),
 			unique.string("email"),
@@ -148,7 +129,7 @@ function onPlayerJoin( player ){
 	local temp = PlayerStaticController();
 	temp.downloadStats(player);
 	print(temp.Login);
-	MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
+	//MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 }
 
 

@@ -1,6 +1,7 @@
-class dbDriver extends dbInterface{
-    type    = ::ReadIniString("configuration.ini","DATABASE","db_type");
-
+class Database extends dbInterface{
+    constructor(){
+        
+    }
     static function connect() {
         if(this.type=="sql")return sqlDriver();
         else if(this.type=="mysql")return mysqlDriver();
@@ -9,5 +10,5 @@ class dbDriver extends dbInterface{
     static function query(q) {
         this.command = q;
     }
-
+    
 }

@@ -26,32 +26,40 @@ class PlayerStaticController extends playerModel {
 
 	}
     static function downloadStats(player) {
-        local player = FindPlayer(player.ID);
-        cache[player.ID] = playerModel();
-        cache[player.ID].Lang = 1;
-        local q = find(player.Name,"nick","users");
-        if(!q){
-            cache[player.ID].Register = false;
-        }else{
-            if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
-                cache[player.ID].Login 	    = true;
-                cache[player.ID].Register	= true;
-                cache[player.ID].Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
-                cache[player.ID].Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
-                cache[player.ID].Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
-                cache[player.ID].Bank 		= ::GetSQLColumnData( q, 10).tointeger();
-                cache[player.ID].Mute 		= ::GetSQLColumnData( q, 11).tointeger();
-                cache[player.ID].Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
-                cache[player.ID].Jail 		= ::GetSQLColumnData( q, 13).tointeger();
-                cache[player.ID].Cash        = ::GetSQLColumnData( q, 9 ).tointeger();
-                cache[player.ID].Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
-                cache[player.ID].Lang       = 1;
-                cache[player.ID].Fuel 		= 0;
-                cache[player.ID].Spree 		= 0;
-			}else cache[player.ID].Register = true;
-		}
-        cache[player.ID].u = player;
-        return cache[player.ID];
+        local p = FindPlayer(player.ID);
+        cache[p.ID] = playerModel();
+        //------------------------//
+        local plr = cache[p.ID];
+        plr.setName(player.Name);
+        print(  plr.getName());
+        plr.setCash(1000);
+        print(  plr.getCash());
+        //cache[player.ID] = playerModel();
+        //cache[player.ID].setName(player.Name)
+        // cache[player.ID].Lang = 1;
+        // local q = find(player.Name,"nick","users");
+        // if(!q){
+        //     cache[player.ID].Register = false;
+        // }else{
+        //     if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
+        //         cache[player.ID].Login 	    = true;
+        //         cache[player.ID].Register	= true;
+        //         cache[player.ID].Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
+        //         cache[player.ID].Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
+        //         cache[player.ID].Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
+        //         cache[player.ID].Bank 		= ::GetSQLColumnData( q, 10).tointeger();
+        //         cache[player.ID].Mute 		= ::GetSQLColumnData( q, 11).tointeger();
+        //         cache[player.ID].Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
+        //         cache[player.ID].Jail 		= ::GetSQLColumnData( q, 13).tointeger();
+        //         cache[player.ID].Cash        = ::GetSQLColumnData( q, 9 ).tointeger();
+        //         cache[player.ID].Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
+        //         cache[player.ID].Lang       = 1;
+        //         cache[player.ID].Fuel 		= 0;
+        //         cache[player.ID].Spree 		= 0;
+		// 	}else cache[player.ID].Register = true;
+		// }
+        // cache[player.ID].u = player;
+        // return cache[player.ID];
     }
     static function auth(p, pass){
         local q = find(p.Name,"nick","users"),c;

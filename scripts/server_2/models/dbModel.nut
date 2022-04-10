@@ -1,0 +1,3 @@
+class dbModel extends dbInterface{
+
+}

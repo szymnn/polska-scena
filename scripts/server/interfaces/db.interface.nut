@@ -1,10 +1,4 @@
-class dbConfig{
-    /**
-    *DEFAULT VIRABLES YOU CAN CHANGE IT
-    *
-    *@PLAYER DEFAULTS
-    */
-
+class dbInterface{
     default_user_table    = "users";
     default_user_row      = "nick";
     default_user_name     = "player";
@@ -25,6 +19,7 @@ class dbConfig{
     command = null;
     table    = null;
     columns  = null;
+    values   = null;
     where    = null;
     row      = null;
     from     = null;
@@ -35,5 +30,9 @@ class dbConfig{
     constructor(){
 
     }
-
+    static function findall();
+    static function create();
+    static function query(q);
+    static function update();
+    static function find(...);
 }

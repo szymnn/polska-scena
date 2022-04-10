@@ -23,7 +23,7 @@ dbManager   <-null;
 *@LOADING DATABASE MODELS
 */
 
-::dofile( "scripts/server/.Models/DataBase/dbConfig.nut" );
+::dofile( "scripts/server/interfaces/db.interface.nut" );
 ::dofile( "scripts/server/.Models/DataBase/dbDriver.nut" );
 ::dofile( "scripts/server/.Models/DataBase/mysqlDriver.nut" );
 ::dofile( "scripts/server/.Models/DataBase/sqlDriver.nut" );
@@ -41,7 +41,11 @@ dbManager   <-null;
 */
 
 ::dofile( "scripts/server/.Models/.cmdModel.nut" );
-::dofile( "scripts/server/.Models/Player/.playerModel.nut" );
+//player interface
+::dofile( "scripts/server/interfaces/player.interface.nut" );
+//model
+::dofile( "scripts/server/.Models/Player/playerModel.nut" );
+//::dofile( "scripts/server/.Models/Player/.playerModel.nut" );
 //::dofile( "scripts/server/.Models/Player/Player.nut" );
 
 /**
