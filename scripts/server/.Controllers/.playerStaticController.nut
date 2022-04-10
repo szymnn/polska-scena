@@ -1,27 +1,27 @@
 class PlayerStaticController extends playerModel {
+    constructor(){
+        base.constructor();
+        dbManager.table = "users";
+        dbManager.row   = "nick";
+    }
     static function checkStatus(p,...) {
         if(vargv[0].len()>0){
             switch(vargv[0]){
                 case "login":
-                    if(!cache[p.ID].Register) return show.info + show.must_register[cache[p.ID].Lang];
-                    else if(!cache[p.ID].Login) return show.info + show.must_login[cache[p.ID].Lang];
+                    if(cache[p.ID].getRegister()==false) return show.info + show.must_register[cache[p.ID].Lang];
+                    else if(cache[p.ID].getLogin()==false) return show.info + show.must_login[cache[p.ID].Lang];
                     else return show.info + show.auto_login[cache[p.ID].Lang];
                 break;
             }
         }
     }
     static function updateStats(player){
-        player = ::FindPlayer(player.Name);
-		if(cache[player.ID].Login){
-            print("UPDATE users SET level = '"+cache[player.ID].Level+"', kills= '"+cache[player.ID].Kills+"', dead = '"+cache[player.ID].Dead+"', joins = '"+cache[player.ID].Joins+"', cash= '"+cache[player.ID].player.Cash+"', bank = '"+cache[player.ID].Bank+"', mute= '"+cache[player.ID].Mute+"', nogoto = '"+cache[player.ID].Nogoto+"', jail = '"+cache[player.ID].Jail+"', skin = '"+cache[player.ID].player.Skin+"' WHERE nick = '"+player.Name+"'");
-            //local q = ::QuerySQL(db,"INSERT OR REPLACE INTO users( nick, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) ('"+player.Name+"', '"+cache[player.ID].Level+"', '"+cache[player.ID].Kills+"', '"+cache[player.ID].Dead+"', '"+cache[player.ID].Joins+"', '"+cache[player.ID].player.Cash+"', '"+cache[player.ID].Bank+"', '"+cache[player.ID].Mute+"', '"+cache[player.ID].Nogoto+"', '"+cache[player.ID].Jail+"', '"+cache[player.ID].player.Skin+"')");
-            //local q = ::QuerySQL(db,"UPDATE users SET cash= '"+cache[player.ID].player.Cash+"' WHERE nick = '"+player.Name+"'");
-            local q = format("UPDATE users SET ( level = '%i', kills= '%i', dead = '%i', joins = '%i', cash= '%i', bank = '%i', mute= '%i', nogoto = '%i', jail = '%i', skin = '%i' WHERE nick = '%s')"
-            cache[player.ID].Level, cache[player.ID].Kills,cache[player.ID].Dead,cache[player.ID].Joins,cache[player.ID].player.Cash,cache[player.ID].Bank,cache[player.ID].Mute,cache[player.ID].Nogoto, cache[player.ID].Jail,cache[player.ID].player.Skin, cache[player.ID].player.Name);
-            print(cache[player.ID].player.Name+" HAS UPDATED STATS");
+        local gamer = cache[player.ID];
+		if(gamer.getLogin()==true){
+            gamer.save();
             ::MessagePlayer(show.info + show.update_stats[cache[player.ID].Lang],player);
             cache[ player.ID ] = null;
-            return ::QuerySQL(db,q);
+            gamer = cache[ player.ID ];
 		}
 
 	}
@@ -29,59 +29,104 @@ class PlayerStaticController extends playerModel {
         local p = FindPlayer(player.ID);
         cache[p.ID] = playerModel();
         //------------------------//
-        local plr = cache[p.ID];
-        plr.setName(player.Name);
-        print(  plr.getName());
-        plr.setCash(1000);
-        print(  plr.getCash());
-        //cache[player.ID] = playerModel();
-        //cache[player.ID].setName(player.Name)
-        // cache[player.ID].Lang = 1;
-        // local q = find(player.Name,"nick","users");
-        // if(!q){
-        //     cache[player.ID].Register = false;
-        // }else{
-        //     if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
-        //         cache[player.ID].Login 	    = true;
-        //         cache[player.ID].Register	= true;
-        //         cache[player.ID].Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
-        //         cache[player.ID].Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
-        //         cache[player.ID].Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
-        //         cache[player.ID].Bank 		= ::GetSQLColumnData( q, 10).tointeger();
-        //         cache[player.ID].Mute 		= ::GetSQLColumnData( q, 11).tointeger();
-        //         cache[player.ID].Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
-        //         cache[player.ID].Jail 		= ::GetSQLColumnData( q, 13).tointeger();
-        //         cache[player.ID].Cash        = ::GetSQLColumnData( q, 9 ).tointeger();
-        //         cache[player.ID].Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
-        //         cache[player.ID].Lang       = 1;
-        //         cache[player.ID].Fuel 		= 0;
-        //         cache[player.ID].Spree 		= 0;
-		// 	}else cache[player.ID].Register = true;
-		// }
-        // cache[player.ID].u = player;
-        // return cache[player.ID];
-    }
-    static function auth(p, pass){
-        local q = find(p.Name,"nick","users"),c;
-		if(!cache[p.ID].Register==false){
-			if(q) return(show.info + show.busy[cache[p.ID].Lang]);
-			else{
-				::QuerySQL(db,"INSERT INTO users( nick, pass, secure, IP, UID, UID2, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) values('"+p.Name+"', '"+::base64_encode(pass)+"','','"+p.IP+"','"+p.UniqueID+"','"+p.UniqueID2+"','0','0','0','0','0','0','0','0','0','1','0','0')");
-				if(cache[p.ID].Lang==0) c = "Your password is: [#FF0000] "+ pass +" - don't forgot it :)";
-                else c = "twoje hsalo to: [#FF0000] "+ pass +" - nie zapomnij go :)";
-                return( show.info + show.reg_succes[cache[p.ID].Lang] + c);
-			}
-		}
-        else if(!cache[p.ID].Login){
-            if(q){
-                if(::base64_encode(pass)==::GetSQLColumnData(q,1)){
-                    ::QuerySQL(db,"UPDATE users SET IP = '"+p.IP+"', UID = '"+p.UniqueID+"', UID2 = '" +p.UniqueID2+"' WHERE nick = '"+p.Name+"'");
-                    cache[p.ID].Login = true;
-                    return(show.info + show._login[cache[p.ID].Lang]);
-                }else return (show.info + show._wrongPass[cache[p.ID].Lang]);
+        local gamer = cache[p.ID];
+        gamer.setName(p.Name);
+        gamer.setID(p.ID);
+        gamer.setIP(p.IP);
+        gamer.setUID(p.UniqueID);
+        gamer.setUID2(p.UniqueID2);
+        gamer.setIP(p.IP);
+        gamer.setRegister(false);
+        gamer.setLogin(false);
+        gamer.setLang(1);
+        gamer.setKills(0);
+        local q = dbManager.find(gamer.getName(),dbManager.row,dbManager.table);
+        if(q && mysql_num_rows( q )>0){
+            if(dbManager.type == "sql"){
+                gamer.setRegister(true);
+                gamer.setLogin(false);
+                print("sql");
+            }
+            else if(dbManager.type=="mysql"){
+                gamer.setRegister(true);
+
+                local stats = mysql_fetch_row(q); 
+    
+                gamer.setPass(::base64_decode(stats[1]));
+                gamer.setUID(stats[3]);
+                gamer.setUID2(stats[4]);
+
+                if(gamer.getUID()==p.UniqueID || gamer.getUID2()==p.UniqueID2){
+                    gamer.setLogin(true);
+                    gamer.setLevel(stats[5]);                      
+                    gamer.setCash(stats[6]);
+                    gamer.setDead(stats[7]);
+                    gamer.setJoins(stats[8]);
+                    gamer.setCash(stats[9]);
+                    gamer.setBank(stats[10]);
+                    gamer.setMute(stats[11]);
+                    gamer.setNogoto(stats[12]);
+                    gamer.setJail(stats[13]);
+                    gamer.setSkin(stats[14]);
+                    gamer.setGang(stats[15]);
+                    gamer.setAutospawn(stats[16]);
+
+                }else gamer.setLogin(false);
+                
             }
         }
-        else return( show.info + show._alreadyLogged[cache[p.ID].Lang]);
+            /*
+            if(player.UniqueID  	== ::GetSQLColumnData( q, 3 ) ){
+                cache[player.ID].Login 	    = true;
+                cache[player.ID].Register	= true;
+                cache[player.ID].Level 		= ::GetSQLColumnData( q, 5 ).tointeger();
+                cache[player.ID].Kills 		= ::GetSQLColumnData( q, 6 ).tointeger();
+                cache[player.ID].Dead 		= ::GetSQLColumnData( q, 7 ).tointeger();
+                cache[player.ID].Bank 		= ::GetSQLColumnData( q, 10).tointeger();
+                cache[player.ID].Mute 		= ::GetSQLColumnData( q, 11).tointeger();
+                cache[player.ID].Nogoto  	= ::GetSQLColumnData( q, 12).tointeger();
+                cache[player.ID].Jail 		= ::GetSQLColumnData( q, 13).tointeger();
+                cache[player.ID].Cash        = ::GetSQLColumnData( q, 9 ).tointeger();
+                cache[player.ID].Skin 	    = ::GetSQLColumnData( q, 14).tointeger();
+                cache[player.ID].Lang       = 1;
+                cache[player.ID].Fuel 		= 0;
+                cache[player.ID].Spree 		= 0;
+			}else cache[player.ID].Register = true;
+            */
+
+        return cache[p.ID];
+    }
+    static function auth(p, pass){
+        local gamer = cache[p.ID];
+        local q = dbManager.find(p.Name,dbManager.row,dbManager.table),c;
+		if(gamer.getRegister()==false){
+			if(q) return(show.info + show.busy[gamer.getLang()]);
+			else{
+                gamer.setPass(pass);
+                gamer.save();
+                
+				// ::QuerySQL(db,"INSERT INTO users( nick, pass, secure, IP, UID, UID2, level, kills, dead, joins, cash, bank, mute, nogoto, jail, skin, gangID, autospawn ) values('"+p.Name+"', '"+::base64_encode(pass)+"','','"+p.IP+"','"+p.UniqueID+"','"+p.UniqueID2+"','0','0','0','0','0','0','0','0','0','1','0','0')");
+				if(gamer.getLang()==0) c = "Your password is: [#FF0000] "+ gamer.getPass() +" - don't forgot it :)";
+                else c = "twoje hsalo to: [#FF0000] "+ gamer.getPass() +" - nie zapomnij go :)";
+                return( show.info + show.reg_succes[gamer.getLang()] + c);
+			}
+		}
+        else if(gamer.getLogin()==false){
+            if(dbManager.type=="mysql"){
+                if(q && mysql_num_rows( q )>0 ){
+                    if(pass==gamer.getPass()) gamer.setLogin(true);
+                }else return (show.info + show._wrongPass[gamer.getLang()]);
+            }
+            else if(dbManager.type=="mysql"){
+                if(q && mysql_num_rows( q )>0 ){
+                    if(pass== gamer.getPass())  gamer.setLogin(true);
+                }else return (show.info + show._wrongPass[gamer.getLang()]);
+            }
+            
+            return(show.info + show._login[gamer.getLang()]);
+                
+        }
+        else return( show.info + show._alreadyLogged[gamer.getLang()]);
     }
     static function unjail( p ) {
       local p = ::FindPlayer(p);

@@ -5,7 +5,7 @@ class playerInterface extends dbModel{
 	Bank 		= 0;
 	Level 		= 0;
 	MuteTime 	= 0;
-	Nogoto 		= 0;
+	Nogoto 		= false;
 	Pass 		= null;
 	Register	= false;
 	Login 		= false;
@@ -28,7 +28,7 @@ class playerInterface extends dbModel{
     CameraLocked= null; 
     CanAttack   = null; 
     CanDriveby  = null; 
-    Cash        = null; 
+    Cash        = 0; 
     Class       = null; 
     Colour      = null; 
     Disarm      = null; 
@@ -65,7 +65,7 @@ class playerInterface extends dbModel{
     SetMarker       = null; 
     SetWandetLevel  = null; 
     SetWeapon       = null; 
-    Skin            = null; 
+    Skin            = 0; 
     Spawn           = null; 
     SpectateTarget  = null; 
     State           = null; 

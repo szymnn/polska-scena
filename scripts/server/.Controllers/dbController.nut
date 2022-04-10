@@ -23,51 +23,64 @@ class dbController extends dbModel{
 
     }
     static function findall() {
-        this.command= "SELECT * FROM " + this.table;
-        this.driver.query(this.command);
-        return this.command;
+      this.command= "SELECT * FROM " + this.table;
+      this.driver.query(this.command);
+      return this.command;
+    }
+    static function find(...) {
+      if(vargv.len()>0){
+        if(vargv[0])this.name 			= vargv[0];
+        else if(vargv[1])this.row 		= vargv[1];
+        else if(vargv[2])this.table 	    = vargv[2];
       }
-
+      this.command = "SELECT * FROM " + this.table + " WHERE "+ this.row +" = '"+ this.name+"'";
+      debug("db",this.command);
+      return base.query(this.command);
+    }
     static function update(cols=null,vals=null){
-        if(cols.len()>0 &&  vals.len()>0 ){
-          local setUpdate="";
-          local setInsertCols = "";
-
-          if(find(this.name,this.row,this.row,this.table)){
-            foreach(a,col in cols){
-              foreach(b,val in vals ){
-                if(a+1==cols.len()) setUpdate += col[a]+"= '"+val[b]+"'";
-                else setUpdate += col[a]+"= '"+val[b]+"',";
-              }
-            }
-            this.command = "UPDATE "+this.table+" SET "+setUpdate+" WHERE "+this.row+" = "+this.name;
-            debug("db",this.command);
-            return base.query(this.command);
-          }else{
-            foreach(a,col in cols){
-              if(a+1==cols.len()) setInsertCols += "'"+col[a]+"'";
-                else setInsertCols += "'"+col[a]+"',";
-            }
-            foreach(a,val in vals ){
-              if(a+1==vals.len())setUpdate += "'"+val[a]+"'";
-              else setUpdate += "'"+val[a]+"',";
-            }
-            this.command = "INSERT INTO "+this.table+" ("+setInsertCols+") VALUES("+setUpdate+");";
-            debug("db",this.command);
-            return base.query(this.command);
+      if(cols.len()>0 &&  vals.len()>0 ){
+        local setUpdate="";
+        local setInsertCols = "";
+        local rows = find(this.name,this.row,this.row,this.table);
+        if(rows && mysql_num_rows( rows )>0){
+          for(local a = 0; a<cols.len(); a++){
+            if (vals[a] == true || vals[a] == false){
+              if(a+1==cols.len()) setUpdate += cols[a]+"= "+vals[a]+" ";
+              else setUpdate += cols[a]+"= "+vals[a]+", ";
           }
+          else{
+            if(a+1==cols.len()) setUpdate += cols[a]+"= '"+vals[a]+"' ";
+            else setUpdate += cols[a]+"= '"+vals[a]+"', ";
+          }
+          }
+          this.command = "UPDATE `"+this.table+"` SET "+setUpdate+" WHERE "+this.row+" = '"+this.name+"'";
+          print(this.command);
+          return base.query(this.command);
+        }else{
+          foreach(a,col in cols){
+            if(a+1==cols.len()) setInsertCols += "`"+col+"` ";
+              else setInsertCols += "`"+col+"`, ";
+          }
+          foreach(a,val in vals ){
+            if(a+1==vals.len()){
+              if (val == true || val == false)
+                setUpdate += ""+val+"";
+              else setUpdate += "'"+val+"'";
+            }
+            else {
+              if( val == true || val == false)
+                setUpdate += ""+val+", ";
+              else setUpdate += "'"+val+"', ";
+            }
+          }
+          this.command = "INSERT INTO `"+this.table+"` ("+setInsertCols+") VALUES("+setUpdate+");";
+          print(this.command);
+          debug("db",this.command);
+          return base.query(this.command);
         }
       }
-      static function find(...) {
-        if(vargv.len()>0){
-          if(vargv[0])this.name 			= vargv[0];
-          else if(vargv[1])this.row 		= vargv[1];
-          else if(vargv[2])this.table 	    = vargv[2];
-        }
-        this.command = base.findall() + " WHERE "+ this.row +" = '"+ this.name+"'";
-        debug("db",this.command);
-        return base.query(this.command);
-      }
+    }
+      
     // static function find(tab = null, cols=[]) {
     //     // foreach(a,column in cols){
     //     //     if(a+1==cols.len()) this.columns += column + "";

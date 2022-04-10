@@ -27,7 +27,7 @@ function onScriptLoad(){
 			local player = FindPlayer( n );
 			local temp = PlayerStaticController.downloadStats(player);
 			cache[player.ID] = temp;
-			//MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
+			MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 		}
 	}
 
@@ -129,7 +129,7 @@ function onPlayerJoin( player ){
 	local temp = PlayerStaticController();
 	temp.downloadStats(player);
 	print(temp.Login);
-	//MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
+	MessagePlayer(PlayerStaticController.checkStatus(player,"login"),player);
 }
 
 
@@ -169,7 +169,8 @@ function onPlayerChat( player, text ){
 
 function onPlayerCommand( player, cmd, text ){
 	local ucan = cmdController.can(player,cmd);
-		if(ucan.can && cache[player.ID].Jail!=1 || cache[player.ID].Level>=10){
+	local gamer = cache[player.ID];
+		// if(ucan.can && cache[player.ID].Jail!=1 || cache[player.ID].Level>=10){
 			if(cmd=="test"){
 				AnnounceAll("dupa",3);
 			}
@@ -226,7 +227,7 @@ function onPlayerCommand( player, cmd, text ){
 			}
 			else if (cmd == "login" || cmd =="register" || cmd =="reg") {
 				if(text)MessagePlayer(PlayerStaticController.auth(player,text),player);
-				else MessagePlayer(show.info + show._pass_empty[cache[player.ID].Lang],player);
+				else MessagePlayer(show.info + show._pass_empty[gamer.getLang()],player);
 			}
 			else if (cmd == "cmds" || cmd == "cmd" || cmd == "commands" || cmd == "help"){
 				local c = 0; if(cache[player.ID].Lang == 0 ) c = "Your command list";
@@ -234,8 +235,8 @@ function onPlayerCommand( player, cmd, text ){
 				MessagePlayer(show.info + c,player);
 				MessagePlayer("[#F0F0F0]"+cmdController.cmdList(player),player);
 			}
-		}
-		else MessagePlayer(show.sytnax[cache[player.ID].Lang] + show.cmd_exists[cache[player.ID].Lang],player );
+		// }
+		// else MessagePlayer(show.sytnax[cache[player.ID].Lang] + show.cmd_exists[cache[player.ID].Lang],player );
 
 	// else{
 	// 	if(cmd == "tests")

@@ -244,11 +244,14 @@ class playerModel extends playerInterface {
     
     //password
     static function getPass(){
-        return base64_encode(this.Pass);
+        return ::base64_decode(this.Pass);
     }
 
     static function setPass(value){
-        return this.Pass = base64_encode(value);
+        return this.Pass = ::base64_encode(value);
+    }
+    static function setPassword(value){
+        return this.Pass = value;
     }
     //IP              
     static function getIP(){
@@ -291,9 +294,17 @@ class playerModel extends playerInterface {
         return this.GangID = value;
     }
    
+   // Skin            = null; 
+   static function getSkin(){
+        return this.Skin;
+    }
+
+    static function setSkin(value){
+        return this.Skin = value;
+    }
 
     static function get(pid = "", field = "nick"){
-        db = dbManager();
+        local db = dbManager;
         db.table = "users";
         local users = null;
         if(pid == "") users = db.findall();
@@ -302,15 +313,16 @@ class playerModel extends playerInterface {
         return users;
     }
 
-    static function save(gamer)
+    static function save()
     {
-        db = dbManager();
+        local db = dbManager;
         db.table = this.table;
         db.row   = "nick";
-        db.name  = gamer.getName();
+        db.name  = this.getName();
+        print(db.name);
         local cols = ["nick","pass","ip","uid","uid2","level","kills","dead","joins","cash","bank","mute","nogoto","jail","skin","gangID","autospawn"];
-        local vals = [gamer.getName(),gamer.getPass(),gamer.getIP(),gamer.getUID(),gamer.GetUID2(),gamer.getLevel(),gamer.getCash(),gamer.getBank,gamer.getMute(),
-            gamer.getNogoto(),gamer.getJail(),gamer.getSkin(),gamer.getGang(),gamer.getAutospawn()];
+        local vals = [this.getName(),::base64_encode(this.getPass()),this.getIP(),this.getUID(),this.getUID2(),this.getLevel(),this.getKills(),this.getDead(),this.getJoins(),
+            this.getCash(),this.getBank(),this.getMute(),this.getNogoto(),this.getJail(),this.getSkin(),this.getGang(),this.getAutospawn()];
         db.update(cols,vals);
         return true;
     }
