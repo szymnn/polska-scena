@@ -21,7 +21,7 @@ function onScriptLoad(){
 	local test = playerModel();
 	local a = test.find("Malina");
 	if(a)print(GetSQLColumnData(a,0));
-	local ret = dbManager.serialize(["chuj","pizda"],["w dupe","nad glowa"]);
+	local ret = dbManager.serialize(["test","test2"],["aaaaaaaa aaaa","nnnnnn gsdfsdfsda"]);
 	foreach( key, serial in ret){
 		print(serial);
 	}
