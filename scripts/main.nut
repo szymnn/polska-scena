@@ -21,6 +21,14 @@ function onScriptLoad(){
 	local test = playerModel();
 	local a = test.find("Malina");
 	if(a)print(GetSQLColumnData(a,0));
+	local ret = dbManager.serialize(["chuj","pizda"],["w dupe","nad glowa"]);
+	foreach( key, serial in ret){
+		print(serial);
+	}
+	local uns = dbManager.unserialize(ret);
+	foreach (serial in uns){
+		print(serial);
+	}
 
 	if(GetPlayers()>0){
 		for( local n = 0; n < GetPlayers(); n++ ){

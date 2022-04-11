@@ -80,6 +80,37 @@ class dbController extends dbModel{
         }
       }
     }
+    static function serialize(param=null,value=null){
+      local setValue = [];
+      for(local a = 0; a<param.len(); a++){
+        setValue.append(param[a] + ":" + value[a] + ";");
+      }
+      return setValue;
+    }
+    static function unserialize(param = null) {
+      local setValue = [], test={};
+      if(typeof(param)=="array"){ 
+        foreach(parameter in param){
+          local explode1 = split(parameter,";");
+          foreach( part_param in explode1 ){
+            local explode2 = split(part_param,":")
+            for(local a=0; a<explode2.len();a++){
+              if(a%2 == 1 && a>0 && a<explode2.len()){
+                local explode3 = split(explode2[a-1],",");
+                setValue.append(explode2[a-1]+" => "+ explode2[a]);
+                local testx=explode2[a-1],testval=explode2[a];
+                test.rawset(testx,testval);
+              } 
+            }
+          } 
+        }
+
+        return test;
+      }
+     else return null;
+      
+    }
+
       
     // static function find(tab = null, cols=[]) {
     //     // foreach(a,column in cols){
