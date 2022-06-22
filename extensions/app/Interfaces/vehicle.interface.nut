@@ -2,7 +2,7 @@ class vehicleInterface extends dbModel{
     fuel        = 0;
     owner       = null;
     sowner      = null;
-    id          = null;
+    ID          = null;
     spawnPos    = "0.0.0";
     spawnAngle  = "0.0.0";
     pos         = "0.0.0";

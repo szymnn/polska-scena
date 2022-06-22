@@ -43,7 +43,7 @@ class Vehicle extends playerStats{
 	}
 }
 function onScriptLoad(){
-	print( "scripts/server/.vehicle.nut - loaded" );
+	print( "scripts/extensions/.vehicle.nut - loaded" );
 	
 }
 function onPlayerEnteringVehicle( player, vehicle, door ){

@@ -1,4 +1,4 @@
-class vehicleModel extends vehicleInterface(){
+class vehicleModel extends vehicleInterface{
     constructor(){
         base.constructor();
     }

@@ -28,8 +28,8 @@ enum StreamType
 function Script::ScriptLoad()
 {
     Console.Print( "[#AAAAAA]*> Client-side script was loaded. <*" );
-    SendDataToServer( StreamType.ServerName ); // we ask server for it's name, to display on screen
-    Console.Print( "Client is asking for server's name" );
+    SendDataToServer( StreamType.ServerName ); // we ask extensions for it's name, to display on screen
+    Console.Print( "Client is asking for extensions's name" );
 
     // creating sprite
     sprite_logo = GUISprite( "logo.png", VectorScreen( sX-(sX/5), sY-(sY/5) ) );
@@ -47,14 +47,14 @@ function Player::PlayerShoot( player, weapon, hitEntity, hitPosition )
 
 function Server::ServerData( stream )
 {
-    // here you receive the data you send from server
+    // here you receive the data you send from extensions
     local type = stream.ReadByte();
     switch( type )
     {
         case StreamType.ServerName:
         {
-            Console.Print( "Client received server's name, so it's ready to display it." );
-            // client received server's name, so we can create the label
+            Console.Print( "Client received extensions's name, so it's ready to display it." );
+            // client received extensions's name, so we can create the label
             SRV_NAME = stream.ReadString();
             
             label_name = GUILabel( );

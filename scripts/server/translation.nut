@@ -32,11 +32,11 @@ show <- {
   /*||LOGS||*/
     save_to_log      = ["**SAVED IN LOG**", "**ZAPISANO W LOGU**"]
     register_in_log  = ["Your steps in game is registred in logs", "Twoje kroki w grze są rejestrowane w logach"]
-    check_log        = ["If you want to check your logs, you need to have an account on the server website [#FFFFFF]"+web_addres+" [#66CC00]and pair it with the game.",
+    check_log        = ["If you want to check your logs, you need to have an account on the extensions website [#FFFFFF]"+web_addres+" [#66CC00]and pair it with the game.",
                        "Jeśli chcesz sprawdzić swoje logi, musisz mieć konto na stronie internetowej serwera [#FFFFFF]"+web_addres+" [#66CC00 i sparować je z grą."]
   /*GLOBAL*/
-  unload_script      = ["The server will be restarted", "Serwer zostanie zrestartowany"]
-  load_script        = ["The server has been successfully restarted", "Serwer został pomyślnie zresetowany"]
+  unload_script      = ["The extensions will be restarted", "Serwer zostanie zrestartowany"]
+  load_script        = ["The extensions has been successfully restarted", "Serwer został pomyślnie zresetowany"]
   cmd_exists         = ["This command not exists", "Podana komenda nie istnieje"]
   cmd_params         = ["You need to add more characters to use the command type/<command> <param>", "Aby uzyc komendy musisz wprowadzic parametr wpisz: /<nazwa komendy> <cokolwiek>"]
   cmd_low            = ["You don't have privileges to use this command", "Nie masz uprwanien do uzycia tej komendy"]

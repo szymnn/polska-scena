@@ -1,11 +1,11 @@
 ::print("Load Blades");	
-	::dofile( "scripts/server/translation.nut" );
+	::dofile( "scripts/extensions/translation.nut" );
 ::print("Load Controllers");
-	::dofile( "scripts/server/.Controllers/serverController.nut" );
+	::dofile( "scripts/extensions/Controllers/serverController.nut" );
 ::print("Load Models");	
-	::dofile( "scripts/server/.Models/Server/setServer.nut" );
+	::dofile( "scripts/extensions/Models/Server/setServer.nut" );
 	
-
+//--------INCLUDE YOUR SCRIPTS----------//
 
 
 

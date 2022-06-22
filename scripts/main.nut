@@ -12,7 +12,7 @@ function onServerStop(){
 }
 
 function onScriptLoad(){
-	dofile( "scripts/server/loader.nut" );
+
 	serverController.StartServer();
 	SetSpawnPlayerPos(-924.16, 1057.98, 15.6029);
 	SetSpawnCameraPos( -925.6366, 1039.8380, 13.0848 );
