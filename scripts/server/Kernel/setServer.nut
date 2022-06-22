@@ -14,6 +14,8 @@ nullable    <-null;
 unique      <-null;
 defaul      <-null;
 cache       <-array(200,null);
+Vehcache    <-array( 10000, null );
+Propcache   <-array( 999, null );
 dbManager   <-null;
 
 

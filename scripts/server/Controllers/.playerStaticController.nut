@@ -41,7 +41,7 @@ class PlayerStaticController extends playerModel {
         gamer.setLang(1);
         gamer.setKills(0);
         local q = dbManager.find(gamer.getName(),dbManager.row,dbManager.table);
-        if(q && mysql_num_rows( q )>0){
+        if(q && mysql_num_rows( q )>0 || q && GetSQLColumnCount( q )>0){
             gamer.setRegister(true);
             if(dbManager.type == "sql"){
     

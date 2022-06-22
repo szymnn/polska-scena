@@ -2,7 +2,13 @@ class vehicleModel extends vehicleInterface(){
     constructor(){
         base.constructor();
     }
-    
+    //ID          = null;
+    static function getID(){
+        return this.ID;
+    }
+    static function setID(val){
+        return this.ID = val;
+    }
     //fuel        = 0;
     static function getFuel(){
         return this.fuel;
@@ -23,13 +29,6 @@ class vehicleModel extends vehicleInterface(){
     }
     static function setSowner(val){
         return this.sowner = val;
-    }
-    //id          = null;
-    static function getID(){
-        return this.id;
-    }
-    static function setID(val){
-        return this.id = val;
     }
     //spawnPos    = "0.0.0";
     static function getSpawnPos(){
@@ -148,9 +147,9 @@ class vehicleModel extends vehicleInterface(){
         db.row   = "name";
         db.name  = this.getName();
         print(db.name);
-        local cols = ["name","model","cost","owner","sowner","lock","tax","tune","color","fuel"];
-        local vals = [this.getName(),::base64_encode(this.getPass()),this.getIP(),this.getUID(),this.getUID2(),this.getLevel(),this.getKills(),this.getDead(),this.getJoins(),
-            this.getCash(),this.getBank(),this.getMute(),this.getNogoto(),this.getJail(),this.getSkin(),this.getGang(),this.getAutospawn()];
+        local cols = ["id","name","model","pos","cost","owner","sowner","lock","tax","tune","color","fuel"];
+        local vals = [this.getID(),this.getName(),this.getModel(),this.getPos()+", "+this.getSpawnAngle(),this.getCost(),this.getOwner(),this.getSowner(),this.getLock(),this.getTax(),this.getTune(),this.getColor(),
+            this.getFuel()];
         db.update(cols,vals);
         return true;
     }
