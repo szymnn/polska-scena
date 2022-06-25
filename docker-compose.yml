@@ -1,0 +1,72 @@
+version: '2'
+services:
+    vcmp_web:
+        container_name: vcmp_web
+        build:
+            context: .
+            dockerfile: vcmp_web.dockerfile
+        restart: always
+        volumes:
+            - '/data/databases:/var/www/html/databases'
+            - '/data/logs:/var/www/html/logs'
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        environment:
+            - MYSQL_ROOT_PASSWORD=Malina321
+            - MYSQL_DATABASE=vcmp
+            - MYSQL_USER=vcmp
+            - MYSQL_PASSWORD=Malina123
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - vcmp_server
+            - vcmp_mysql
+
+    vcmp_server:
+        container_name: vcmp_server
+        build:
+            context: .
+            dockerfile: vcmp_server.dockerfile
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        volumes:
+            - './data/databases:/home/vcmp/extensions/app/DataBases'
+            - './data/logs:/home/vcmp/extensions/app/Logs'
+            - './:/home/vcmp'
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=Malina321
+            - MYSQL_DATABASE=vcmp
+            - MYSQL_USER=vcmp
+            - MYSQL_PASSWORD=Malina123
+        ports:
+            - "8192:8192/udp"
+            - "5192:5192/udp"
+        depends_on:
+            - vcmp_mysql
+
+    vcmp_mysql:
+        container_name: vcmp_mysql
+        image: mariadb:10.6.8
+        dns:
+            - 8.8.8.8
+            - 8.8.4.4
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=Malina321
+            - MYSQL_DATABASE=vcmp
+            - MYSQL_USER=vcmp
+            - MYSQL_PASSWORD=Malina123
+        ports:
+            - "3306:3306"
+        volumes:
+            - './data/mysql:/var/lib/mysql'
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080

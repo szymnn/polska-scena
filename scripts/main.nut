@@ -492,3 +492,68 @@ function msg(id,player){
 
 	}
 }
+function onConsoleInput(  cmd=null, text=null, last_cmd=null, table=null, column=null, types=null, def=null )
+{
+	try {
+		if (cmd == "chat") {
+			Message("[#00ff00]kokia owner :[#ffffff] " + text);
+			print("kokia owner:" + text);
+		}
+		else if( cmd == "migrations") {
+			if(text=="create") {
+				::system("cd extensions/app/Kernel/DataBase/Scripts && ./Migrations.sh");
+
+				//onConsoleInputExtension(test);
+			}else{
+				::system("clear");
+
+			}
+
+		}
+
+//		if(!cmd && table!=null){
+//			print("table name: " + table);
+//			print("set column name: " );
+//			local column = cmd;
+//			onConsoleInput(null,null,null,table,cmd);
+//		}
+
+
+
+	}
+catch(e) print( "OnConsoleCommand Error: " + e );
+}
+function onConsoleInputExtension( test ) {
+	if(test == "migrations:create"){
+		::system("clear");
+		onConsoleInput(null,null,test);
+
+
+	}
+	local a = 0, table, column, types, def;
+//	if (cmd == "vcmp:migrations:create") {
+//		print("type table name");
+//		table = cmd;
+//		cmd = null;
+//		print(table);
+//	}
+}
+function GetTok(string, separator, n, ...)
+{
+	local m = vargv.len() > 0 ? vargv[0] : n,
+		tokenized = split(string, separator),
+		text = "";
+
+	if (n > tokenized.len() || n < 1) return null;
+	for (; n <= m; n++)
+	{
+		text += text == "" ? tokenized[n-1] : separator + tokenized[n-1];
+	}
+	return text;
+}
+
+function NumTok(string, separator)
+{
+	local tokenized = split(string, separator);
+	return tokenized.len();
+}
