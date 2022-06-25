@@ -1,6 +1,6 @@
 BASE_OS_TYPE<-null;
-if(system("cls"))BASE_OS_TYPE=0;
-else BASE_OS_TYPE=1;
+if(system("cls"))BASE_OS_TYPE=0;//windows
+else BASE_OS_TYPE=1;//llinux
 
 class serverModel{
     SetDeathmatchScoreboard         = false;

@@ -83,19 +83,37 @@ function onScriptLoad(){
 	);
 
 	AnnounceAll("",6);
-	//onAddCommand("reg","0","");
-	//onAddCommand("log","0","");
-	//onAddCommand("login","0","");
-	//onAddCommand("smon","10","test");
-	//onAddCommand("cmds","0","");
-	//onAddCommand("help","0","");
-	//onAddCommand("set","0","");
-	//onAddCommand("jail","0","");
-
+	::system("");
+	//createMigration("test",["unique.string","string","defaul.integer"],["name","pass","skin"],["","",51]);
 	dbManager.find(["dupa","aa"]);
 	system("echo [107m [30mDATA BASE FRAMEWORK BY[0m [105mMALINA[0m [107m [30mHAS LOADED SUCCESUFL[0m\n");
+
+
 	//print("dupa");
 	//print(0,"gowno", "XD");
+}
+function createMigration(table,types,columns, defaults){
+	local now = date();
+	local file =""+now.hour+""+ now.min+""+now.sec+""+now.year+""+now.month+""+now.day+".nut";
+	system("cd extensions/app/Migrations && echo function onScriptLoad(){ dbManager.migrate('"+table+"' >>"+ file);
+	foreach( type in types) {
+		foreach (column in columns) {
+			if(defaults.len()>0){
+				foreach(def in defaults){
+					if(def!="") {
+						system("cd extensions/app/Migrations &&"
+							+
+							"echo " + type + "(" + column + "," + def + ")>>" + file
+						);
+					}
+				}
+			}
+			system("cd extensions/app/Migrations &&"
+			+
+				"echo "+type+"(" + column +")>>" + file
+			);
+		}
+	}system("cd extensions/app/Migrations && echo ]);} >>"+ file);
 }
 function relo(){
 	if(dbManager.driver=="sql")DisconnectSQL(db);

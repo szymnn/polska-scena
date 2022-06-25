@@ -17,6 +17,7 @@ class vehicleInterface extends dbModel{
     model       = 0;
     tax         = 0;
     color       =[];
+    mileage     = 0;
     
     constructor(){
 		base.constructor();

@@ -13,6 +13,7 @@
 ::dofile( "extensions/app/Kernel/DataBase/mysqlDriver.nut" );
 ::dofile( "extensions/app/Kernel/DataBase/sqlDriver.nut" );
 ::dofile( "extensions/app/Kernel/DataBase/Controller/dbController.nut" );
+::dofile( "extensions/app/Kernel/commands.nut" );
 
 ::print("Load Interfaces");
 ::dofile( "extensions/app/Interfaces/player.interface.nut" );

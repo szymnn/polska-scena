@@ -129,6 +129,12 @@ class vehicleModel extends vehicleInterface{
     static function setModel(val){
         return this.tax = val;
     }
+    static function getMileage(){
+        return this.mileage;
+    }
+    static function setMileage(val){
+        return this.mileage = val;
+    }
 
     static function get(pid = "", field = "name"){
         local db = dbManager;

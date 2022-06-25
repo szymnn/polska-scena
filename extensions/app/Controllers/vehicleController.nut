@@ -27,10 +27,26 @@ class vehicleController extends vehicleModel{
                     print( "-->Zaladowano " + vehCount + " modeli pojazdow." );
                     vehCount = null;
                     FreeSQLQuery( q );
-                    PrzywrocPojazdy();
                 break;
                 case "mysql":
-
+                    while ( GetSQLColumnData( q, 0 ) )
+                    {
+                        pos 	= split( GetSQLColumnData( q, 5 ), ", " );
+                        m	= GetSQLColumnData( q, 4 ).tointeger();
+                        col	= GetSQLColumnData( q, 9 ).tointeger();
+                        cold	= GetSQLColumnData( q, 10 ).tointeger();
+                        x	= pos[ 0 ].tofloat();
+                        y	= pos[ 1 ].tofloat();
+                        z	= pos[ 2 ].tofloat();
+                        angle	= pos[ 5 ].tofloat();
+                        CreateVehicle( m, Vector( x, y, z ), angle, col, cold );
+                        GetSQLNextRow( q );
+                    }
+                    local
+                    vehCount = GetVehicleCount();
+                    print( "-->Zaladowano " + vehCount + " modeli pojazdow." );
+                    vehCount = null;
+                    FreeSQLQuery( q );
                 break;
             }
 
@@ -45,8 +61,9 @@ class vehicleController extends vehicleModel{
         local gamer = cache[p.ID];
         local car   = Vehcache[v.ID];
         if(p.Vehicle){
-            car.setAngle(player.Vehicle.EulerAngle.x + ", " +  player.Vehicle.EulerAngle.y + ", " +  player.Vehicle.EulerAngle.z);
-
+            car.setSpawnAngle(player.Vehicle.EulerAngle.x + ", " +  player.Vehicle.EulerAngle.y + ", " +  player.Vehicle.EulerAngle.z);
+            car.setSpawnPos(player.Pos.x + ", " +  player.Vehicle.Pos.y + ", " +  player.Vehicle.Pos.z);
+            car.save();
         }
     }
 }
