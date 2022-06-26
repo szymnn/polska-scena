@@ -502,9 +502,10 @@ function onConsoleInput(  cmd=null, text=null, last_cmd=null, table=null, column
 		else if( cmd == "migrations") {
 			if(text=="create") {
 				::system("cd extensions/app/Kernel/DataBase/Scripts && ./Migrations.sh");
-
-				//onConsoleInputExtension(test);
-			}else{
+			}else if(text=="migrate"){
+				::system("cd extensions/app/Kernel/DataBase/Scripts && ./Migrate.sh");
+			}
+			else{
 				::system("clear");
 
 			}

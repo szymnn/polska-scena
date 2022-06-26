@@ -23,9 +23,9 @@ class vehicleController extends vehicleModel{
                         GetSQLNextRow( q );	
                     }
                         local
-                            vehCount = GetVehicleCount();
-                    print( "-->Zaladowano " + vehCount + " modeli pojazdow." );
-                    vehCount = null;
+                            vechount = GetVehicleCount();
+                    print( "-->Zaladowano " + vechount + " modeli pojazdow." );
+                    vechount = null;
                     FreeSQLQuery( q );
                 break;
                 case "mysql":
@@ -43,9 +43,9 @@ class vehicleController extends vehicleModel{
                         GetSQLNextRow( q );
                     }
                     local
-                    vehCount = GetVehicleCount();
-                    print( "-->Zaladowano " + vehCount + " modeli pojazdow." );
-                    vehCount = null;
+                    vechount = GetVehicleCount();
+                    print( "-->Zaladowano " + vechount + " modeli pojazdow." );
+                    vechount = null;
                     FreeSQLQuery( q );
                 break;
             }

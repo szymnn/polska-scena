@@ -18,6 +18,10 @@ Vehcache    <-array( 10000, null );
 Propcache   <-array( 999, null );
 dbManager   <-null;
 
+::system("cd /home/vcmp/extensions/app/Kernel/Database/Scripts && ./Begin.sh");
+::system("cd /home/vcmp/extensions/app/Kernel/Database/Scripts && ./AutoloadGenerate.sh");
+
+
 
 ///**
 //*LOADING REQUIRED IMPLEMENTATION SCRIPTS

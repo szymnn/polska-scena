@@ -15,21 +15,24 @@
 ::dofile( "extensions/app/Kernel/DataBase/Controller/dbController.nut" );
 ::dofile( "extensions/app/Kernel/commands.nut" );
 
-::print("Load Interfaces");
-::dofile( "extensions/app/Interfaces/player.interface.nut" );
-::dofile( "extensions/app/Interfaces/vehicle.interface.nut" );
+//AUTOLOAD
+::dofile("extensions/app/Autoload/Autoload.nut");
 
+//::print("Load Interfaces");
+//::dofile( "extensions/app/Interfaces/player.interface.nut" );
+//::dofile( "extensions/app/Interfaces/vehicle.interface.nut" );
+//
+//
+//::print("Load Models");
+//::dofile( "extensions/app/Models/playerModel.nut" );
+//::dofile( "extensions/app/Models/vehicleModel.nut" );
 
-::print("Load Models");
-::dofile( "extensions/app/Models/playerModel.nut" );
-::dofile( "extensions/app/Models/vehicleModel.nut" );
-
-
-::print("Load Controllers");
-::dofile( "extensions/app/Controllers/playerStaticController.nut" );
-::dofile( "extensions/app/Controllers/vehicleController.nut" );
-
-::print("Load Services");
+//
+//::print("Load Controllers");
+//::dofile( "extensions/app/Controllers/playerStaticController.nut" );
+//::dofile( "extensions/app/Controllers/vehicleController.nut" );
+//
+//::print("Load Services");
 
 
 ::print("Load main blade ~/scripts/main.nut~");

@@ -140,7 +140,7 @@ class vehicleModel extends vehicleInterface{
         local db = dbManager;
         db.table = "vehicles";
         local vehicles = null;
-        if(pid == "") users = db.findall();
+        if(pid == "") vehicles = db.findall();
         else vehicles =  db.find(pid,filed);
 
         return vehicles;
